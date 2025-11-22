@@ -103,5 +103,8 @@
     <ClInclude Include="..\src\Game\Map.h">
       <Filter>Game\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Collision\OBB.h">
+      <Filter>Collision\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 
 #include "Collision\Grid.h"
+#include "Collision\Octree.h"
 
 namespace Game
 {
@@ -19,6 +20,7 @@ namespace Game
 		}
 
 		void createGrid(Collision::Grid* grid);
+		void createOctree(Collision::Octree* octree);
 	protected:
 		std::string name;
 		Ogre::Vector3 size;

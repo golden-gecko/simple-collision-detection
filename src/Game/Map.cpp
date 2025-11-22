@@ -127,4 +127,9 @@ namespace Game
 
 		manual->end();
 	}
+
+	void Map::createOctree(Collision::Octree* octree)
+	{
+
+	}
 }

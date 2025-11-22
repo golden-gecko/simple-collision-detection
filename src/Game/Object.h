@@ -17,6 +17,11 @@ namespace Game
 		virtual void update(float time);
 
 		virtual ~Object();
+
+		Collision::Shape* getShape() const
+		{
+			return shape;
+		}
 	protected:
 		std::string name;
 		std::string mesh;
@@ -24,8 +29,9 @@ namespace Game
 		Ogre::Entity* entity;
 		Ogre::SceneNode* sceneNode;
 
-		Collision::Sphere* shape;
-//		Collision::AABB* shape;
+		Collision::AABB* shape;
+//		Collision::OBB* shape;
+//		Collision::Sphere* shape;
 
 		Ogre::Entity* shapeEntity;
 		Ogre::SceneNode* shapeSceneNode;

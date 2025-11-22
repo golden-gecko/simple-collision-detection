@@ -45,6 +45,7 @@
     <ClInclude Include="..\src\Collision\Grid.h" />
     <ClInclude Include="..\src\Collision\Math.h" />
     <ClInclude Include="..\src\Collision\NoTree.h" />
+    <ClInclude Include="..\src\Collision\OBB.h" />
     <ClInclude Include="..\src\Collision\Octree.h" />
     <ClInclude Include="..\src\Collision\Plane.h" />
     <ClInclude Include="..\src\Collision\Shape.h" />

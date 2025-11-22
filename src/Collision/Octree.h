@@ -8,5 +8,7 @@ namespace Collision
 	{
 	public:
 		virtual void build();
+
+		virtual bool collide(Shape* shape) const;
 	};
 }

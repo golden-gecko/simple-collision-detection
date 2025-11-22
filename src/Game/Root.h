@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 
 #include "Collision\Grid.h"
+#include "Collision\Octree.h"
 
 #include "Game\Object.h"
 
@@ -118,5 +119,6 @@ namespace Game
 
 		Collision::Tree* tree;
 		Collision::Grid* grid;
+		Collision::Octree* octree;
 	};
 }

@@ -80,8 +80,7 @@ namespace Game
 			}
 
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
-
+			
 
 			Ogre::Vector3 size(10000.0f, 1000.0f, 10000.0f);
 
@@ -93,10 +92,14 @@ namespace Game
 
 			srand((unsigned int)time(NULL));
 
+
 			Collision::Solver* solver = new Collision::Solver();
 
-//			tree = new Collision::NoTree();
-			tree = new Collision::Grid();
+
+			tree = new Collision::NoTree();
+//			tree = new Collision::Grid();
+//			tree = new Collision::Octree();
+
 			tree->setSolver(solver);
 			tree->setSize(size);
 
@@ -107,14 +110,15 @@ namespace Game
 			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), size.x));
 			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), size.z));
 
-
-
+			
 			grid = dynamic_cast<Collision::Grid*>(tree);
+			octree = dynamic_cast<Collision::Octree*>(tree);
 
 			if (grid)
 			{
 				grid->setCellSize(Ogre::Vector3(1000.0f, 500.0f, 1000.0f));
 			}
+
 
 			for (int i = 0; i < 50; ++i)
 			{
@@ -126,10 +130,16 @@ namespace Game
 			
 			tree->build();
 
+
 			if (grid)
 			{
 				map->createGrid(grid);
 			}
+			else if (octree)
+			{
+				map->createOctree(octree);
+			}
+
 
 			root->startRendering();
 
