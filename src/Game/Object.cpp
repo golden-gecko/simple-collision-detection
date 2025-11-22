@@ -96,32 +96,35 @@ namespace Game
 		}
 		else
 		{
-			Ogre::Vector3 velocity = (target - position).normalisedCopy() * speed * time;
-
-			// Przesuñ bry³ê. Je¿eli po przesuniêciu bry³a koliduje z innym obiektem,
-			// to cofnij przesuniêcie. W przeciwnym wypadku, przesuñ ca³y obiekt.
-			shape->translate(velocity);
-
-			if (Root::getSingleton().getTree()->collide(shape))
+			if (Root::getSingleton().getMoveObjects())
 			{
-				shapeEntity->setMaterialName("Collision");
+				Ogre::Vector3 velocity = (target - position).normalisedCopy() * speed * time;
 
-				shape->translate(-velocity);
+				// Przesuñ bry³ê. Je¿eli po przesuniêciu bry³a koliduje z innym obiektem,
+				// to cofnij przesuniêcie. W przeciwnym wypadku, przesuñ ca³y obiekt.
+				shape->translate(velocity);
 
-				target = position - velocity * 200.0f;
-			}
-			else
-			{
-				shapeEntity->setMaterialName("Wireframe");
+				if (Root::getSingleton().getTree()->collide(shape))
+				{
+					shapeEntity->setMaterialName("Collision");
 
-				sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
-				sceneNode->translate(velocity);
+					shape->translate(-velocity);
 
-				if (dynamic_cast<Collision::AABB*>(shape)) {
-					shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
+					target = position - velocity * 200.0f;
 				}
+				else
+				{
+					shapeEntity->setMaterialName("Wireframe");
 
-				pathSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * (target - position).length());
+					sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
+					sceneNode->translate(velocity);
+
+					if (dynamic_cast<Collision::AABB*>(shape)) {
+						shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
+					}
+
+					pathSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * (target - position).length());
+				}
 			}
 		}
 	}

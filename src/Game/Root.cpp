@@ -12,7 +12,7 @@ Game::Root* Ogre::Singleton<Game::Root>::ms_Singleton = NULL;
 
 namespace Game
 {
-	Root::Root() : render(true)
+	Root::Root() : render(true), moveObjects(true)
 	{
 		root = new Ogre::Root();
 
@@ -223,6 +223,16 @@ namespace Game
 	{
 		camera->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
 		camera->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
+
+		return true;
+	}
+
+	bool Root::keyPressed(const OIS::KeyEvent& arg)
+	{
+		if (arg.key == OIS::KC_M)
+		{
+			moveObjects = !moveObjects;
+		}
 
 		return true;
 	}

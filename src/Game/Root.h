@@ -57,10 +57,7 @@ namespace Game
 			render = false;
 		}
 
-		virtual bool keyPressed(const OIS::KeyEvent& arg)
-		{
-			return true;
-		}
+		virtual bool keyPressed(const OIS::KeyEvent& arg);
 
 		virtual bool keyReleased(const OIS::KeyEvent& arg)
 		{
@@ -102,6 +99,16 @@ namespace Game
 		Collision::Tree* getTree() const {
 			return tree;
 		}
+
+		bool getMoveObjects() const
+		{
+			return moveObjects;
+		}
+
+		void setMoveObjects(bool moveObjects)
+		{
+			this->moveObjects = moveObjects;
+		}
 	protected:
 		Ogre::Root* root;
 		Ogre::RenderWindow* renderWindow;
@@ -114,6 +121,7 @@ namespace Game
 		OIS::Mouse* mouse;
 
 		bool render;
+		bool moveObjects;
 
 		std::vector<Game::Object*> objects;
 

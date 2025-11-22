@@ -76,21 +76,61 @@ namespace Collision
 			}
 
 			// SprawdŸ które obiekty mieszcz¹ siê w nowych wêz³ach.
-			for (std::vector<Shape*>::const_iterator i =  shapes.begin(); i != shapes.end(); ++i)
+			for (int i = 0; i < 8; ++i)
 			{
+				bool isCollision = false;
 
+				// SprawdŸ czy dowolny z obiektów koliduje z wêz³em.
+				// Je¿eli kolizja nie zachodzi, to usuñ wêze³.
+				for (std::vector<Shape*>::const_iterator j =  shapes.begin(); j != shapes.end(); ++j)
+				{
+					AABB* aabb = dynamic_cast<AABB*>(*j);
+
+					if (aabb && solver->collide(newCells[i]->aabb, *aabb))
+					{
+						isCollision = true;
+					}
+				}
+
+				if (isCollision == false)
+				{
+					delete newCells[i];
+					newCells[i] = NULL;
+				}
 			}
 
 			// Przypisz nowe wêz³y do przetwarzanego.
 			for (int i = 0; i < 8; ++i)
 			{
-				current->cells[i] = newCells[i];
+				if (newCells[i])
+				{
+					current->cells[i] = newCells[i];
+				}
 			}
 
-			// Dodaj nowe wêz³y na koniec kolejki.
+			// Je¿eli wêz³y s¹ liœciami, to przypisz do nich obiekty.
+			// Je¿eli nie, to dodaj nowe wêz³y na koniec kolejki.
 			for (int i = 0; i < 8; ++i)
 			{
-				cells.push_back(newCells[i]);
+				if (newCells[i])
+				{
+					if (newCells[i]->depth >= maxDepth)
+					{
+						for (std::vector<Shape*>::const_iterator j =  shapes.begin(); j != shapes.end(); ++j)
+						{
+							AABB* aabb = dynamic_cast<AABB*>(*j);
+
+							if (aabb && solver->collide(newCells[i]->aabb, *aabb))
+							{
+								newCells[i]->attachShape(aabb);
+							}
+						}
+					}
+					else
+					{
+						cells.push_back(newCells[i]);
+					}
+				}
 			}
 
 			// Usuñ przetworzony wêze³ z kolejki.
@@ -100,6 +140,53 @@ namespace Collision
 
 	bool Octree::collide(Shape* shape) const
 	{
-		return true;
+		std::list<Cell*> cells;
+
+		for (int i = 0; i < 8; ++i)
+		{
+			if (root->cells[i])
+			{
+				cells.push_back(root->cells[i]);
+			}
+		}
+
+		do
+		{
+			Cell* current = cells.front();
+
+			AABB* aabb = dynamic_cast<AABB*>(shape);
+
+			if (aabb && solver->collide(current->aabb, *aabb))
+			{
+				if (current->shapes.size() > 0)
+				{
+					const std::vector<Shape*>& shapes = current->shapes;
+
+					for (std::vector<Shape*>::const_iterator j =  shapes.begin(); j != shapes.end(); ++j)
+					{
+						AABB* s1 = dynamic_cast<AABB*>(shape);
+						AABB* s2 = dynamic_cast<AABB*>(*j);
+
+						if (s1 != s2 && s1 && s2 && solver->collide(*s1, *s2))
+						{
+							return true;
+						}
+					}
+				}
+			}
+
+			for (int i = 0; i < 8; ++i)
+			{
+				if (current->cells[i])
+				{
+					cells.push_back(current->cells[i]);
+				}
+			}
+
+			cells.pop_front();
+		}
+		while (cells.size() > 0);
+
+		return false;
 	}
 }
