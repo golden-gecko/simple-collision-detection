@@ -22,7 +22,7 @@ namespace App
 			Ogre::Math::RangeRandom(100.0f, map->getSize().x - 100.0f), 0.0f,
 			Ogre::Math::RangeRandom(100.0f, map->getSize().z - 100.0f));
 
-		/*
+		//*
 		shape = new Collision::AABB(sceneNode->getPosition(),
 			entity->getMesh()->getBoundingSphereRadius() * 0.5f * Collision::Vector3::UNIT_SCALE);
 
@@ -37,7 +37,7 @@ namespace App
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 		//*/
 
-		//*
+		/*
 		shape = new Collision::OBB(sceneNode->getPosition(),
 			entity->getMesh()->getBounds().getSize() * 0.5f * Collision::Vector3::UNIT_SCALE);
 

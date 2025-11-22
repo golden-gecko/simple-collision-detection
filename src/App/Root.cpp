@@ -97,8 +97,8 @@ namespace App
 			Collision::Solver* solver = new Collision::Solver();
 
 
-			tree = new Collision::NoTree();
-//			tree = new Collision::Grid();
+//			tree = new Collision::NoTree();
+			tree = new Collision::Grid();
 //			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
@@ -125,11 +125,12 @@ namespace App
 			}
 
 
-			const std::string meshes[3] =
+			const int meshCount = 2;
+			const std::string meshes[meshCount] =
 			{
 				"robot.mesh",
-				"RZR-002.mesh",
-				"tudorhouse.mesh"
+				"RZR-002.mesh"
+			//	"tudorhouse.mesh"
 			};
 
 			for (int i = 0; i < 50; ++i)
@@ -137,7 +138,7 @@ namespace App
 				std::stringstream ss;
 				ss << "#" << i;
 
-				objects.push_back(new App::Object(ss.str(), meshes[rand() % 3], map));
+				objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
 			}
 			
 			tree->build();

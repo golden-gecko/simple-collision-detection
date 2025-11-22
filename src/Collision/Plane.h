@@ -18,6 +18,8 @@ namespace Collision
 		{
 			return distance;
 		}
+
+		virtual ~Plane();
 	protected:
 		Vector3 normal;
 		float distance;

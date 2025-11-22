@@ -29,8 +29,8 @@ namespace App
 		Ogre::Entity* entity;
 		Ogre::SceneNode* sceneNode;
 
-//		Collision::AABB* shape;
-		Collision::OBB* shape;
+		Collision::AABB* shape;
+//		Collision::OBB* shape;
 //		Collision::Sphere* shape;
 
 		Ogre::Entity* shapeEntity;
