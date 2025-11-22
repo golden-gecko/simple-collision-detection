@@ -98,8 +98,8 @@ namespace App
 
 
 //			tree = new Collision::NoTree();
-			tree = new Collision::Grid();
-//			tree = new Collision::Octree();
+//			tree = new Collision::Grid();
+			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
 			tree->setSize(size);
@@ -125,12 +125,12 @@ namespace App
 			}
 
 
-			const int meshCount = 2;
+			const int meshCount = 3;
 			const std::string meshes[meshCount] =
 			{
 				"robot.mesh",
-				"RZR-002.mesh"
-			//	"tudorhouse.mesh"
+				"RZR-002.mesh",
+				"tudorhouse.mesh"
 			};
 
 			for (int i = 0; i < 50; ++i)
