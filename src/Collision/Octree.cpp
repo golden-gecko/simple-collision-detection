@@ -8,8 +8,4 @@ namespace Collision
 	{
 		std::cout << "Octre::build()" << std::endl;
 	}
-
-	void Octree::createNode()
-	{
-	}
 }

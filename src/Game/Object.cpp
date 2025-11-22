@@ -16,7 +16,7 @@ namespace Game
 		sceneNode = Root::getSingleton().createSceneNode();
 		sceneNode->attachObject(entity);
 		sceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		sceneNode->setPosition(Ogre::Math::RangeRandom(-300.0f, 300.0f), 0.0f, Ogre::Math::RangeRandom(-300.0f, 300.0f));
+		sceneNode->setPosition(Ogre::Math::RangeRandom(100.0f, 900.0f), 0.0f, Ogre::Math::RangeRandom(100.0f, 900.0f));
 
 		//*
 		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius() * 0.5f);
@@ -33,11 +33,10 @@ namespace Game
 
 		manual = Root::getSingleton().getSceneManager()->createManualObject(name + "_m");
 		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(manual);
-
 		//*/
 
 		/*
-		shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBoundingSphereRadius() * Ogre::Vector3::UNIT_SCALE);
+		shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBoundingSphereRadius() * 0.5f);
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
 		shapeEntity->setUserAny(Ogre::Any(this));
@@ -46,11 +45,22 @@ namespace Game
 		shapeSceneNode = sceneNode->createChildSceneNode();
 		shapeSceneNode->attachObject(shapeEntity);
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getSize());
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.02f * shape->getSize());
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 		//*/
 
 		Root::getSingleton().getTree()->add(shape);
+
+		target.x = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+		target.y = 0.0f;
+		target.z = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+
+		speed = Ogre::Math::RangeRandom(10.0f, 50.0f);
+
+		// Reprezentacja prêdkoœci oraz trasy.
+		manual = Root::getSingleton().getSceneManager()->createManualObject(name + "_manual");
+
+		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(manual);
 	}
 
 	void Object::update(float time)
@@ -59,49 +69,43 @@ namespace Game
 
 		if (position.distance(target) < 1.0f)
 		{
-			target.x += Ogre::Math::RangeRandom(-100.0f, 100.0f);
-			target.z += Ogre::Math::RangeRandom(-100.0f, 100.0f);
+			target.x = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+			target.z = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+
+			speed = Ogre::Math::RangeRandom(10.0f, 50.0f);
 		}
 		else
 		{
-			Ogre::Vector3 velocity = (target - position).normalisedCopy() * 30.0f * time;
+			Ogre::Vector3 velocity = (target - position).normalisedCopy() * speed * time;
 
-			sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
+			// Przesuñ bry³ê. Je¿eli po przesuniêciu bry³a koliduje z innym obiektem,
+			// to cofnij przesuniêcie. W przeciwnym wypadku, przesuñ ca³y obiekt.
+			shape->translate(velocity);
 
-			if (Root::getSingleton().getTree()->canMove(shape, velocity))
+			if (Root::getSingleton().getTree()->collide(shape))
 			{
+				shapeEntity->setMaterialName("Collision");
+
+				shape->translate(-velocity);
+
+				target = position - velocity * 100.0f;
+			}
+			else
+			{
+				shapeEntity->setMaterialName("Wireframe");
+
+				sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
 				sceneNode->translate(velocity);
 
 				shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
 
-				shape->translate(velocity);
+				manual->clear();
+				manual->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
+				manual->position(position);
+				manual->position(target);
+				manual->end();
 			}
 		}
-
-		/*
-		manual->clear();
-		manual->begin("Manual", Ogre::RenderOperation::OT_LINE_LIST);
-
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::UNIT_X * shape->getRadius());
-
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::UNIT_Y * shape->getRadius());
-		
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::UNIT_Z * shape->getRadius());
-
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::NEGATIVE_UNIT_X * shape->getRadius());
-
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::NEGATIVE_UNIT_Y * shape->getRadius());
-		
-		manual->position(shape->getPosition());
-		manual->position(shape->getPosition() + Ogre::Vector3::NEGATIVE_UNIT_Z * shape->getRadius());
-
-		manual->end();
-		//*/
 	}
 
 	Object::~Object()

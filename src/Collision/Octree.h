@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tree.h"
+#include "Collision\Tree.h"
 
 namespace Collision
 {
@@ -8,7 +8,5 @@ namespace Collision
 	{
 	public:
 		virtual void build();
-	protected:
-		virtual void createNode();
 	};
 }

@@ -32,19 +32,17 @@ namespace Collision
 
 	bool Solver::collide(const Sphere& s1, const Plane& s2)
 	{
-		return false;
+		const Vector3& q = s1.getPosition();
+		const Vector3& n = s2.getNormal();
+
+		float dq = Math::Abs(n.dotProduct(q));
+		float dn = n.dotProduct(n);
+
+		return Math::Abs(dq - s2.getDistance()) < s1.getRadius();
 	}
 
 	bool Solver::collide(const Sphere& s1, const Sphere& s2)
 	{
-		Vector3 p1 = s1.getPosition();
-		Vector3 p2 = s2.getPosition();
-
-		float d1 = s1.getPosition().distance(s2.getPosition());
-		float d2 = s1.getRadius() + s2.getRadius();
-
-		bool r = s1.getPosition().distance(s2.getPosition()) <= s1.getRadius() + s2.getRadius();
-
 		return s1.getPosition().distance(s2.getPosition()) <= s1.getRadius() + s2.getRadius();
 	}
 

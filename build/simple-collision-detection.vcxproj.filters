@@ -51,7 +51,7 @@
       <Filter>Game\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Collision\Tree.cpp">
-      <Filter>Collision\Header Files</Filter>
+      <Filter>Collision\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

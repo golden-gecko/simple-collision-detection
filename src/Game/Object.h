@@ -31,5 +31,6 @@ namespace Game
 		Ogre::ManualObject* manual;
 
 		Ogre::Vector3 target;
+		float speed;
 	};
 }
