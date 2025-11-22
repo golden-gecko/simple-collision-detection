@@ -4,10 +4,10 @@
 #include "Collision\OBB.h"
 #include "Collision\Sphere.h"
 
-#include "Game\Object.h"
-#include "Game\Root.h"
+#include "App\Object.h"
+#include "App\Root.h"
 
-namespace Game
+namespace App
 {
 	Object::Object(const std::string& name, const std::string& mesh, Map* map)
 		: name(name), mesh(mesh), target(Ogre::Vector3::ZERO), map(map)
@@ -22,7 +22,7 @@ namespace Game
 			Ogre::Math::RangeRandom(100.0f, map->getSize().x - 100.0f), 0.0f,
 			Ogre::Math::RangeRandom(100.0f, map->getSize().z - 100.0f));
 
-		//*
+		/*
 		shape = new Collision::AABB(sceneNode->getPosition(),
 			entity->getMesh()->getBoundingSphereRadius() * 0.5f * Collision::Vector3::UNIT_SCALE);
 
@@ -33,11 +33,11 @@ namespace Game
 		shapeSceneNode = sceneNode->createChildSceneNode();
 		shapeSceneNode->attachObject(shapeEntity);
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.02f * shape->getSize());
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 		//*/
 
-		/*
+		//*
 		shape = new Collision::OBB(sceneNode->getPosition(),
 			entity->getMesh()->getBounds().getSize() * 0.5f * Collision::Vector3::UNIT_SCALE);
 
@@ -48,12 +48,12 @@ namespace Game
 		shapeSceneNode = sceneNode->createChildSceneNode();
 		shapeSceneNode->attachObject(shapeEntity);
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.02f * shape->getSize());
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 		//*/
 
 		/*
-		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius() * 0.5f);
+		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius());
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
 		shapeEntity->setUserAny(Ogre::Any(this));
@@ -62,7 +62,7 @@ namespace Game
 		shapeSceneNode = sceneNode->createChildSceneNode();
 		shapeSceneNode->attachObject(shapeEntity);
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getRadius() * 2.0f);
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getRadius() * 2.0f);
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 
 		path = Root::getSingleton().getSceneManager()->createManualObject(name + "_m");

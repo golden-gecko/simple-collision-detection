@@ -5,7 +5,7 @@
 #include "Collision\Grid.h"
 #include "Collision\Octree.h"
 
-namespace Game
+namespace App
 {
 	class Map
 	{

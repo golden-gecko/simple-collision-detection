@@ -41,19 +41,19 @@
     <ClCompile Include="..\src\Main.cpp">
       <Filter>Game\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Game\Object.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Game\Root.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\StdAfx.cpp">
       <Filter>Game\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Collision\Tree.cpp">
       <Filter>Collision\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Game\Map.cpp">
+    <ClCompile Include="..\src\App\Map.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\App\Root.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\App\Object.cpp">
       <Filter>Game\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -91,20 +91,20 @@
     <ClInclude Include="..\src\Collision\Vector3.h">
       <Filter>Collision\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Game\Object.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\StdAfx.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Game\Root.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Game\Map.h">
       <Filter>Game\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Collision\OBB.h">
       <Filter>Collision\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\App\Map.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\App\Root.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\App\Object.h">
+      <Filter>Game\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

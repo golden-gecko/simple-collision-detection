@@ -3,7 +3,7 @@
 #include "Collision\AABB.h"
 #include "Collision\Grid.h"
 
-#include "Game\Root.h"
+#include "App\Root.h"
 
 namespace Collision
 {

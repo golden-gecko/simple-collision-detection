@@ -5,9 +5,9 @@
 #include "Collision\Grid.h"
 #include "Collision\Octree.h"
 
-#include "Game\Object.h"
+#include "App\Object.h"
 
-namespace Game
+namespace App
 {
 	class Root : public Ogre::Singleton<Root>, Ogre::FrameListener, Ogre::WindowEventListener,
 		OIS::KeyListener, OIS::MouseListener, OIS::JoyStickListener
@@ -123,7 +123,7 @@ namespace Game
 		bool render;
 		bool moveObjects;
 
-		std::vector<Game::Object*> objects;
+		std::vector<App::Object*> objects;
 
 		Collision::Tree* tree;
 		Collision::Grid* grid;

@@ -5,9 +5,9 @@
 #include "Collision\AABB.h"
 #include "Collision\Sphere.h"
 
-#include "Game\Map.h"
+#include "App\Map.h"
 
-namespace Game
+namespace App
 {
 	class Object
 	{
@@ -29,8 +29,8 @@ namespace Game
 		Ogre::Entity* entity;
 		Ogre::SceneNode* sceneNode;
 
-		Collision::AABB* shape;
-//		Collision::OBB* shape;
+//		Collision::AABB* shape;
+		Collision::OBB* shape;
 //		Collision::Sphere* shape;
 
 		Ogre::Entity* shapeEntity;

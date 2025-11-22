@@ -4,13 +4,13 @@
 #include "Collision\NoTree.h"
 #include "Collision\Octree.h"
 
-#include "Game\Map.h"
-#include "Game\Object.h"
-#include "Game\Root.h"
+#include "App\Map.h"
+#include "App\Object.h"
+#include "App\Root.h"
 
-Game::Root* Ogre::Singleton<Game::Root>::ms_Singleton = NULL;
+App::Root* Ogre::Singleton<App::Root>::ms_Singleton = NULL;
 
-namespace Game
+namespace App
 {
 	Root::Root() : render(true), moveObjects(true)
 	{
@@ -28,7 +28,8 @@ namespace Game
 			camera->lookAt(0.0f, 0.0f, 0.0f);
 			camera->setNearClipDistance(0.1f);
 			
-			if (root->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_INFINITE_FAR_PLANE)) {
+			if (root->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_INFINITE_FAR_PLANE))
+			{
 				camera->setFarClipDistance(0.0f);
 			}
 			else
@@ -82,7 +83,7 @@ namespace Game
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 			
 
-			Ogre::Vector3 size(10000.0f, 10000.0f, 10000.0f);
+			Ogre::Vector3 size(10000.0f, 2000.0f, 10000.0f);
 
 			Map* map = new Map("Map", size);
 
@@ -96,9 +97,9 @@ namespace Game
 			Collision::Solver* solver = new Collision::Solver();
 
 
-//			tree = new Collision::NoTree();
+			tree = new Collision::NoTree();
 //			tree = new Collision::Grid();
-			tree = new Collision::Octree();
+//			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
 			tree->setSize(size);
@@ -124,12 +125,19 @@ namespace Game
 			}
 
 
-			for (int i = 0; i < 20; ++i)
+			const std::string meshes[3] =
+			{
+				"robot.mesh",
+				"RZR-002.mesh",
+				"tudorhouse.mesh"
+			};
+
+			for (int i = 0; i < 50; ++i)
 			{
 				std::stringstream ss;
 				ss << "#" << i;
 
-				objects.push_back(new Game::Object(ss.str(), "robot.mesh", map));
+				objects.push_back(new App::Object(ss.str(), meshes[rand() % 3], map));
 			}
 			
 			tree->build();
@@ -148,7 +156,7 @@ namespace Game
 			root->startRendering();
 
 
-			for (std::vector<Game::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
+			for (std::vector<App::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
 			{
 				delete (*i);
 			}
@@ -211,7 +219,7 @@ namespace Game
 		}
 
 
-		for (std::vector<Game::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
+		for (std::vector<App::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
 		{
 			(*i)->update(evt.timeSinceLastFrame);
 		}

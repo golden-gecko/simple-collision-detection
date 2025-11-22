@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 
-#include "Game\Root.h"
+#include "App\Root.h"
 
 int main()
 {
-	delete new Game::Root();
+	delete new App::Root();
 
 	return 0;
 }

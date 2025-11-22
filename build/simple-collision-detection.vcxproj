@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\App\Map.cpp" />
+    <ClCompile Include="..\src\App\Object.cpp" />
+    <ClCompile Include="..\src\App\Root.cpp" />
     <ClCompile Include="..\src\Collision\Grid.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
@@ -31,9 +34,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Collision\Tree.cpp" />
-    <ClCompile Include="..\src\Game\Map.cpp" />
-    <ClCompile Include="..\src\Game\Object.cpp" />
-    <ClCompile Include="..\src\Game\Root.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -41,6 +41,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\App\Map.h" />
+    <ClInclude Include="..\src\App\Object.h" />
+    <ClInclude Include="..\src\App\Root.h" />
     <ClInclude Include="..\src\Collision\AABB.h" />
     <ClInclude Include="..\src\Collision\Grid.h" />
     <ClInclude Include="..\src\Collision\Math.h" />
@@ -53,9 +56,6 @@
     <ClInclude Include="..\src\Collision\Sphere.h" />
     <ClInclude Include="..\src\Collision\Tree.h" />
     <ClInclude Include="..\src\Collision\Vector3.h" />
-    <ClInclude Include="..\src\Game\Map.h" />
-    <ClInclude Include="..\src\Game\Object.h" />
-    <ClInclude Include="..\src\Game\Root.h" />
     <ClInclude Include="..\src\StdAfx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

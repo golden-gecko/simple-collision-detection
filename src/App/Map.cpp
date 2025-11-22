@@ -1,9 +1,9 @@
 #include "StdAfx.h"
 
-#include "Game\Map.h"
-#include "Game\Root.h"
+#include "App\Map.h"
+#include "App\Root.h"
 
-namespace Game
+namespace App
 {
 	Map::Map(const std::string& name, const Ogre::Vector3& size) : name(name), size(size)
 	{
