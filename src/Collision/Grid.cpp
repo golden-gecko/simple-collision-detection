@@ -28,7 +28,7 @@ namespace Collision
 		Vector3 halfSize = cellSize / 2.0f;
 
 		// Zbuduj komórki siatki.
-		cells = new Collision::AABB[numberCells[0] * numberCells[1] * numberCells[2]];
+		cells = new Cell[numberCells[0] * numberCells[1] * numberCells[2]];
 		
 		for (int z = 0; z < numberCells[2]; ++z)
 		{
@@ -38,19 +38,109 @@ namespace Collision
 				{
 					int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
 
-					cells[offset].setPosition(Vector3(
+					cells[offset].aabb.setPosition(Vector3(
 						x * cellSize.x + halfSize.x,
 						y * cellSize.y + halfSize.y,
 						z * cellSize.z + halfSize.z));
 
-					cells[offset].setSize(halfSize);
+					cells[offset].aabb.setSize(halfSize);
 				}
+			}
+		}
+
+		// Przypisz obiekty (bry³y) do komórek siatki.
+		for (std::vector<Shape*>::iterator i =  shapes.begin(); i != shapes.end(); ++i)
+		{
+			Shape* shape = *i;
+			Plane* plane = dynamic_cast<Plane*>(shape);
+
+			if (plane == NULL)
+			{
+				// Oblicz wspó³rzêdne komórki.
+				Vector3 cellCoordinates = shape->getPosition() / getCellSize();
+
+				// Przypisz obiekt do komórki.
+				/*
+				std::cout
+					<< numberCells[0] << " " << numberCells[1] << " " << numberCells[2] << "\n"
+					<< shape->getPosition() << "\n"
+					<< cellCoordinates << "\n"
+					<< offset << std::endl;
+				*/
+
+				Cell& cell = getCell((int)cellCoordinates.x, (int)cellCoordinates.y, (int)cellCoordinates.z);
+				cell.attachShape(shape);
 			}
 		}
 	}
 	
 	bool Grid::collide(Shape* shape) const
 	{
-		return true;
+		// Indeksy s¹siednich komórek, które bêdziemy
+		// przeszukiwali podczas testowania kolizji.
+		static const int indexes[26][3] =
+		{
+			{ -1, -1, -1 },
+			{ -1, -1,  0 },
+			{ -1, -1,  1 },
+
+			{ -1,  0, -1 },
+			{ -1,  0,  0 },
+			{ -1,  0,  1 },
+
+			{ -1,  1, -1 },
+			{ -1,  1,  0 },
+			{ -1,  1,  1 },
+
+			{  0, -1, -1 },
+			{  0, -1,  0 },
+			{  0, -1,  1 },
+
+			{  0,  0, -1 },
+			{  0,  0,  1 },
+
+			{  0,  1, -1 },
+			{  0,  1,  0 },
+			{  0,  1,  1 },
+
+			{  1, -1, -1 },
+			{  1, -1,  0 },
+			{  1, -1,  1 },
+
+			{  1,  0, -1 },
+			{  1,  0,  0 },
+			{  1,  0,  1 },
+
+			{  1,  1, -1 },
+			{  1,  1,  0 },
+			{  1,  1,  1 }
+		};
+
+		for (int z = 0; z < numberCells[2]; ++z)
+		{
+			for (int y = 0; y < numberCells[1]; ++y)
+			{
+				for (int x = 0; x < numberCells[0]; ++x)
+				{
+					int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
+					const std::vector<Shape*>& shapes = getCell(x, y, z).shapes;
+
+					for (std::vector<Shape*>::const_iterator i =  shapes.begin(); i != shapes.end(); ++i)
+					{
+						{
+							Sphere* s1 = dynamic_cast<Sphere*>(shape);
+							Sphere* s2 = dynamic_cast<Sphere*>(*i);
+
+							if (s1 && s2 && s1 != s2 && solver->collide(*s1, *s2))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 }

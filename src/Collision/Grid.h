@@ -5,6 +5,21 @@
 
 namespace Collision
 {
+	struct Cell
+	{
+		AABB aabb;
+		std::vector<Shape*> shapes;
+
+		void attachShape(Shape* shape)
+		{
+			shapes.push_back(shape);
+		}
+
+		void detachShape(Shape* shape)
+		{
+		}
+	};
+
 	class Grid : public Tree
 	{
 	public:
@@ -29,18 +44,33 @@ namespace Collision
 			return numberCells;
 		}
 
-		const AABB& getCell(int offset) const
+		Cell& getCell(int offset)
+		{
+			return cells[offset];
+		}
+		
+		const Cell& getCell(int offset) const
 		{
 			return cells[offset];
 		}
 
-		const Collision::AABB* getCells() const
+		Cell& getCell(int x, int y, int z)
+		{
+			return cells[(z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x];
+		}
+
+		const Cell& getCell(int x, int y, int z) const
+		{
+			return cells[(z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x];
+		}
+
+		const Cell* getCells() const
 		{
 			return cells;
 		}
 	protected:
 		Vector3 cellSize;
 		int numberCells[3];
-		Collision::AABB* cells;
+		Cell* cells;
 	};
 }

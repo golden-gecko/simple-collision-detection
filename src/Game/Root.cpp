@@ -108,7 +108,7 @@ namespace Game
 
 
 
-			Collision::Grid* grid = dynamic_cast<Collision::Grid*>(tree);
+			grid = dynamic_cast<Collision::Grid*>(tree);
 
 			if (grid)
 			{
@@ -122,9 +122,13 @@ namespace Game
 
 				objects.push_back(new Game::Object(ss.str(), "robot.mesh", map));
 			}
-
+			
 			tree->build();
-			map->createGrid(grid);
+
+			if (grid)
+			{
+				map->createGrid(grid);
+			}
 
 			root->startRendering();
 

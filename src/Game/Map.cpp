@@ -64,7 +64,7 @@ namespace Game
 	void Map::createGrid(Collision::Grid* grid)
 	{
 		const int* numberCells = grid->getNumberCells();
-		const Collision::AABB* cells = grid->getCells();
+		const Collision::Cell* cells = grid->getCells();
 
 		// Wygeneruj siatkê.
 		manual->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
@@ -77,8 +77,8 @@ namespace Game
 				{
 					int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
 
-					const Collision::Vector3& position = cells[offset].getPosition();
-					const Collision::Vector3& size = cells[offset].getSize();
+					const Collision::Vector3& position = cells[offset].aabb.getPosition();
+					const Collision::Vector3& size = cells[offset].aabb.getSize();
 
 					Collision::Vector3 min = position - size;
 					Collision::Vector3 max = position + size;

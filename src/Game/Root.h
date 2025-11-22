@@ -2,7 +2,7 @@
 
 #include "StdAfx.h"
 
-#include "Collision\Tree.h"
+#include "Collision\Grid.h"
 
 #include "Game\Object.h"
 
@@ -117,5 +117,6 @@ namespace Game
 		std::vector<Game::Object*> objects;
 
 		Collision::Tree* tree;
+		Collision::Grid* grid;
 	};
 }
