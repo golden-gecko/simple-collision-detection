@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Collision\Plane.h"
 
 namespace Collision

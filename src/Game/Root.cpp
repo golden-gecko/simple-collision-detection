@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 
+#include "Collision\Grid.h"
+#include "Collision\NoTree.h"
+#include "Collision\Octree.h"
+
 #include "Game\Object.h"
 #include "Game\Root.h"
 
@@ -73,11 +77,16 @@ namespace Game
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
 
+			srand((unsigned int)time(NULL));
+
+			Collision::Solver* solver = new Collision::Solver();
+			tree = new Collision::NoTree(solver);
+
 			objects.push_back(new Game::Object("#1", "robot.mesh"));
-			//objects.push_back(new Game::Object("#2", "robot.mesh"));
-			//objects.push_back(new Game::Object("#3", "robot.mesh"));
-			//objects.push_back(new Game::Object("#4", "robot.mesh"));
-			//objects.push_back(new Game::Object("#5", "robot.mesh"));
+			objects.push_back(new Game::Object("#2", "robot.mesh"));
+			objects.push_back(new Game::Object("#3", "robot.mesh"));
+			objects.push_back(new Game::Object("#4", "robot.mesh"));
+			objects.push_back(new Game::Object("#5", "robot.mesh"));
 
 
 			root->startRendering();
@@ -87,6 +96,9 @@ namespace Game
 			{
 				delete (*i);
 			}
+
+			delete tree;
+			delete solver;
 		}
 	}
 

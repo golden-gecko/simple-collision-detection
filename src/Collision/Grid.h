@@ -4,16 +4,10 @@
 
 namespace Collision
 {
-	class NoTree : public Tree
+	class Grid : public Tree
 	{
 	public:
-		NoTree(Solver* solver) : Tree(solver)
-		{
-		}
-
 		virtual void build();
-
-		virtual bool canMove(Shape* shape, const Vector3& v) const;
 	protected:
 		virtual void createNode();
 	};

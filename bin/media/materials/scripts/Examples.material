@@ -10,6 +10,18 @@ material Wireframe
 	}
 }
 
+material Manual
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 1.0 0.2
+			polygon_mode wireframe
+		}
+	}
+}
+
 material Examples/SphereMappedRustySteel
 {
 	technique

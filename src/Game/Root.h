@@ -2,6 +2,8 @@
 
 #include "StdAfx.h"
 
+#include "Collision\Tree.h"
+
 #include "Game\Object.h"
 
 namespace Game
@@ -89,6 +91,9 @@ namespace Game
 			return sceneManager;
 		}
 
+		Collision::Tree* getTree() const {
+			return tree;
+		}
 	protected:
 		Ogre::Root* root;
 		Ogre::RenderWindow* renderWindow;
@@ -103,5 +108,7 @@ namespace Game
 		bool render;
 
 		std::vector<Game::Object*> objects;
+
+		Collision::Tree* tree;
 	};
 }

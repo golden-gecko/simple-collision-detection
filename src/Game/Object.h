@@ -22,11 +22,13 @@ namespace Game
 		Ogre::Entity* entity;
 		Ogre::SceneNode* sceneNode;
 
-//		Collision::Sphere* shape;
-		Collision::AABB* shape;
+		Collision::Sphere* shape;
+//		Collision::AABB* shape;
 
 		Ogre::Entity* shapeEntity;
 		Ogre::SceneNode* shapeSceneNode;
+
+		Ogre::ManualObject* manual;
 
 		Ogre::Vector3 target;
 	};
