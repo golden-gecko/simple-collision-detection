@@ -82,7 +82,7 @@ namespace Game
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 			
 
-			Ogre::Vector3 size(10000.0f, 2000.0f, 10000.0f);
+			Ogre::Vector3 size(10000.0f, 10000.0f, 10000.0f);
 
 			Map* map = new Map("Map", size);
 
@@ -124,7 +124,7 @@ namespace Game
 			}
 
 
-			for (int i = 0; i < 50; ++i)
+			for (int i = 0; i < 20; ++i)
 			{
 				std::stringstream ss;
 				ss << "#" << i;

@@ -7,7 +7,15 @@ namespace Collision
 	class Shape
 	{
 	public:
-		Shape(const Vector3& position) : position(position)
+		enum Type
+		{
+			ST_SPHERE = 0x01,
+			ST_AABB = 0x02,
+			ST_PLANE = 0x04,
+			ST_OBB = 0x08
+		};
+	public:
+		Shape(Type type, const Vector3& position) : type(type), position(position)
 		{
 		}
 
@@ -21,11 +29,17 @@ namespace Collision
 			return position;
 		}
 
+		Type getType() const
+		{
+			return type;
+		}
+
 		virtual void translate(const Vector3& vector)
 		{
 			this->position += vector;
 		}
 	protected:
+		Type type;
 		Vector3 position;
 	};
 }

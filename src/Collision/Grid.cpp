@@ -51,29 +51,42 @@ namespace Collision
 		// Przypisz obiekty (bry³y) do komórek siatki.
 		for (std::vector<Shape*>::iterator i =  shapes.begin(); i != shapes.end(); ++i)
 		{
-			Shape* shape = *i;
-			Plane* plane = dynamic_cast<Plane*>(shape);
-
-			if (plane == NULL)
-			{
-				// Oblicz wspó³rzêdne komórki.
-				Vector3 cellCoordinates = shape->getPosition() / getCellSize();
-
-				// Przypisz obiekt do komórki.
-				/*
-				std::cout
-					<< numberCells[0] << " " << numberCells[1] << " " << numberCells[2] << "\n"
-					<< shape->getPosition() << "\n"
-					<< cellCoordinates << "\n"
-					<< offset << std::endl;
-				*/
-
-				Cell& cell = getCell((int)cellCoordinates.x, (int)cellCoordinates.y, (int)cellCoordinates.z);
-				cell.attachShape(shape);
-			}
+			updateShape(*i);
 		}
 	}
 	
+	void Grid::updateShape(Shape* shape)
+	{
+		Plane* plane = dynamic_cast<Plane*>(shape);
+
+		if (plane == NULL)
+		{
+			// Oblicz wspó³rzêdne komórki.
+			Vector3 cellCoordinates = shape->getPosition() / getCellSize();
+
+			// Przypisz obiekt do komórki.
+			/*
+			std::cout
+				<< numberCells[0] << " " << numberCells[1] << " " << numberCells[2] << "\n"
+				<< shape->getPosition() << "\n"
+				<< cellCoordinates << "\n"
+				<< offset << std::endl;
+			//*/
+
+			Cell& cell = getCell((int)cellCoordinates.x, (int)cellCoordinates.y, (int)cellCoordinates.z);
+			cell.attachShape(shape);
+
+			/*
+			if (shapesToCells[shape])
+			{
+				shapesToCells[shape]->detachShape(shape);
+			}
+
+			shapesToCells[shape] = &cell;
+			*/
+		}
+	}
+
 	bool Grid::collide(Shape* shape) const
 	{
 		// Indeksy s¹siednich komórek, które bêdziemy
@@ -122,19 +135,13 @@ namespace Collision
 			{
 				for (int x = 0; x < numberCells[0]; ++x)
 				{
-					int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
 					const std::vector<Shape*>& shapes = getCell(x, y, z).shapes;
 
 					for (std::vector<Shape*>::const_iterator i =  shapes.begin(); i != shapes.end(); ++i)
 					{
+						if (collideShapes(shape, *i))
 						{
-							Sphere* s1 = dynamic_cast<Sphere*>(shape);
-							Sphere* s2 = dynamic_cast<Sphere*>(*i);
-
-							if (s1 && s2 && s1 != s2 && solver->collide(*s1, *s2))
-							{
-								return true;
-							}
+							return true;
 						}
 					}
 				}

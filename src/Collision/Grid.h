@@ -20,6 +20,7 @@ namespace Collision
 
 			void detachShape(Shape* shape)
 			{
+				std::remove(shapes.begin(), shapes.end(), shape);
 			}
 		};
 
@@ -68,9 +69,12 @@ namespace Collision
 		{
 			return cells;
 		}
+
+		void updateShape(Shape* shape);
 	protected:
 		Vector3 cellSize;
 		int numberCells[3];
 		Cell* cells;
+		std::map<Shape*, Cell*> shapesToCells;
 	};
 }

@@ -7,12 +7,12 @@ namespace Collision
 	class AABB : public Shape
 	{
 	public:
-		AABB() : Shape(Vector3::ZERO)
+		AABB() : Shape(Shape::ST_AABB, Vector3::ZERO)
 		{
 			setSize(Vector3::ZERO);
 		}
 
-		AABB(const Vector3& position, const Vector3& size) : Shape(position)
+		AABB(const Vector3& position, const Vector3& size) : Shape(Shape::ST_AABB, position)
 		{
 			setSize(size);
 		}

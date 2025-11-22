@@ -10,12 +10,12 @@ namespace Collision
 		Vector3 u[3];
 		float e[3];
 
-		OBB() : Shape(Vector3::ZERO)
+		OBB() : Shape(Shape::ST_OBB, Vector3::ZERO)
 		{
 			setSize(Vector3::ZERO);
 		}
 
-		OBB(const Vector3& position, const Vector3& size) : Shape(position)
+		OBB(const Vector3& position, const Vector3& size) : Shape(Shape::ST_OBB, position)
 		{
 			setSize(size);
 		}

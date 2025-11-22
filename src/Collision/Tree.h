@@ -32,6 +32,8 @@ namespace Collision
 		virtual void build() = 0;
 
 		virtual bool collide(Shape* shape) const = 0;
+
+		virtual bool collideShapes(Shape* _s1, Shape* _s2) const;
 	protected:
 		Solver* solver;
 

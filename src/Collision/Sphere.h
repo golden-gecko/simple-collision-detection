@@ -7,7 +7,7 @@ namespace Collision
 	class Sphere : public Shape
 	{
 	public:
-		Sphere(const Vector3& position, float radius) : Shape(position), radius(radius)
+		Sphere(const Vector3& position, float radius) : Shape(Shape::ST_SPHERE, position), radius(radius)
 		{
 		}
 
