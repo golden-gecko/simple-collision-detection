@@ -17,9 +17,10 @@ namespace Game
 		sceneNode->attachObject(entity);
 		sceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
 		sceneNode->setPosition(Ogre::Math::RangeRandom(-100.0f, 100.0f), 0.0f, Ogre::Math::RangeRandom(-100.0f, 100.0f));
+		sceneNode->showBoundingBox(true);
 
+		/*
 		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius());
-//		shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBounds().getSize());
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
 		shapeEntity->setUserAny(Ogre::Any(this));
@@ -30,11 +31,26 @@ namespace Game
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
 		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getRadius());
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+		//*/
+
+		//*
+		shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBoundingSphereRadius() * Ogre::Vector3::UNIT_SCALE);
+
+		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
+		shapeEntity->setUserAny(Ogre::Any(this));
+		shapeEntity->setMaterialName("Wireframe");
+
+		shapeSceneNode = sceneNode->createChildSceneNode();
+		shapeSceneNode->attachObject(shapeEntity);
+		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getSize());
+		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+		//*/
 	}
 
 	void Object::update(float time)
 	{
-		const Ogre::Vector3 position = sceneNode->getPosition();
+		const Ogre::Vector3& position = sceneNode->getPosition();
 
 		if (position.distance(target) < 1.0f)
 		{
@@ -47,6 +63,8 @@ namespace Game
 
 			sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
 			sceneNode->translate(velocity);
+
+			shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
 
 			shape->translate(velocity);
 		}

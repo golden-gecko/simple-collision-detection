@@ -84,6 +84,11 @@ namespace Game
 			return true;
 		}
 
+		Ogre::SceneManager* getSceneManager() const
+		{
+			return sceneManager;
+		}
+
 	protected:
 		Ogre::Root* root;
 		Ogre::RenderWindow* renderWindow;

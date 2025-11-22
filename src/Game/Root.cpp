@@ -16,7 +16,7 @@ namespace Game
 			renderWindow = root->initialise(true);
 			sceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 			camera = sceneManager->createCamera("Camera");
-			camera->setPosition(300.0f, 300.0f, 300.0f);
+			camera->setPosition(0.0f, 300.0f, 300.0f);
 			camera->lookAt(0.0f, 0.0f, 0.0f);
 			camera->setNearClipDistance(0.1f);
 			
@@ -74,9 +74,10 @@ namespace Game
 
 
 			objects.push_back(new Game::Object("#1", "robot.mesh"));
-			objects.push_back(new Game::Object("#2", "robot.mesh"));
-			objects.push_back(new Game::Object("#3", "robot.mesh"));
-			objects.push_back(new Game::Object("#4", "robot.mesh"));
+			//objects.push_back(new Game::Object("#2", "robot.mesh"));
+			//objects.push_back(new Game::Object("#3", "robot.mesh"));
+			//objects.push_back(new Game::Object("#4", "robot.mesh"));
+			//objects.push_back(new Game::Object("#5", "robot.mesh"));
 
 
 			root->startRendering();

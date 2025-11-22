@@ -4,6 +4,7 @@ material Wireframe
 	{
 		pass
 		{
+			ambient 1.0 0.2 0.2
 			polygon_mode wireframe
 		}
 	}
