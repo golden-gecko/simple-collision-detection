@@ -37,6 +37,7 @@ namespace Game
 			}
 
 			viewport = renderWindow->addViewport(camera);
+			viewport->setBackgroundColour(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
 
 			root->addFrameListener(this);
 			Ogre::WindowEventUtilities::addWindowEventListener(renderWindow, this);
