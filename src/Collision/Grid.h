@@ -5,24 +5,24 @@
 
 namespace Collision
 {
-	struct Cell
-	{
-		AABB aabb;
-		std::vector<Shape*> shapes;
-
-		void attachShape(Shape* shape)
-		{
-			shapes.push_back(shape);
-		}
-
-		void detachShape(Shape* shape)
-		{
-		}
-	};
-
 	class Grid : public Tree
 	{
 	public:
+		struct Cell
+		{
+			AABB aabb;
+			std::vector<Shape*> shapes;
+
+			void attachShape(Shape* shape)
+			{
+				shapes.push_back(shape);
+			}
+
+			void detachShape(Shape* shape)
+			{
+			}
+		};
+
 		virtual ~Grid();
 
 		virtual void build();

@@ -64,7 +64,7 @@ namespace Game
 	void Map::createGrid(Collision::Grid* grid)
 	{
 		const int* numberCells = grid->getNumberCells();
-		const Collision::Cell* cells = grid->getCells();
+		const Collision::Grid::Cell* cells = grid->getCells();
 
 		// Wygeneruj siatkê.
 		manual->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
@@ -130,6 +130,74 @@ namespace Game
 
 	void Map::createOctree(Collision::Octree* octree)
 	{
+		// Wygeneruj siatkê.
+		manual->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
 
+		std::list<Collision::Octree::Cell*> cells;
+		cells.push_back(octree->getRoot());
+
+		int offset = 0;
+
+		while (cells.size() > 0)
+		{
+			Collision::Octree::Cell* current = cells.front();
+
+			const Collision::Vector3& position = current->aabb.getPosition();
+			const Collision::Vector3& size = current->aabb.getSize();
+
+			Collision::Vector3 min = position - size;
+			Collision::Vector3 max = position + size;
+
+			manual->position(min.x, min.y, min.z);
+			manual->position(max.x, min.y, min.z);
+			manual->position(max.x, min.y, max.z);
+			manual->position(min.x, min.y, max.z);
+
+			manual->position(min.x, max.y, min.z);
+			manual->position(max.x, max.y, min.z);
+			manual->position(max.x, max.y, max.z);
+			manual->position(min.x, max.y, max.z);
+
+			offset += 8;
+
+			manual->index(offset + 0);
+			manual->index(offset + 1);
+			manual->index(offset + 1);
+			manual->index(offset + 2);
+			manual->index(offset + 2);
+			manual->index(offset + 3);
+			manual->index(offset + 3);
+			manual->index(offset + 0);
+
+			manual->index(offset + 4);
+			manual->index(offset + 5);
+			manual->index(offset + 5);
+			manual->index(offset + 6);
+			manual->index(offset + 6);
+			manual->index(offset + 7);
+			manual->index(offset + 7);
+			manual->index(offset + 4);
+
+			manual->index(offset + 0);
+			manual->index(offset + 4);
+			manual->index(offset + 1);
+			manual->index(offset + 5);
+			manual->index(offset + 2);
+			manual->index(offset + 6);
+			manual->index(offset + 3);
+			manual->index(offset + 7);
+
+			for (int i = 0; i < 8; ++i)
+			{
+				if (current->cells[i])
+				{
+					cells.push_back(current->cells[i]);
+				}
+			}
+
+			cells.pop_front();
+		}
+
+		manual->end();
 	}
 }

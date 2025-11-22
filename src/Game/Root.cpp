@@ -82,7 +82,7 @@ namespace Game
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 			
 
-			Ogre::Vector3 size(10000.0f, 1000.0f, 10000.0f);
+			Ogre::Vector3 size(10000.0f, 2000.0f, 10000.0f);
 
 			Map* map = new Map("Map", size);
 
@@ -96,9 +96,9 @@ namespace Game
 			Collision::Solver* solver = new Collision::Solver();
 
 
-			tree = new Collision::NoTree();
+//			tree = new Collision::NoTree();
 //			tree = new Collision::Grid();
-//			tree = new Collision::Octree();
+			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
 			tree->setSize(size);
@@ -117,6 +117,10 @@ namespace Game
 			if (grid)
 			{
 				grid->setCellSize(Ogre::Vector3(1000.0f, 500.0f, 1000.0f));
+			}
+			else if (octree)
+			{
+				octree->setMaxDepth(4);
 			}
 
 
