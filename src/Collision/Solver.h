@@ -1,13 +1,24 @@
 #pragma once
 
-#include "Sphere.h"
+#include "Collision\AABB.h"
+#include "Collision\Plane.h"
+#include "Collision\Sphere.h"
 
 namespace Collision
 {
 	class Solver
 	{
 	public:
-		static bool collide(const Sphere& s1, const Sphere& s2);
+		virtual bool collide(const AABB& s1, const AABB& s2);
+		virtual bool collide(const AABB& s1, const Plane& s2);
+		virtual bool collide(const AABB& s1, const Sphere& s2);
+		
+		virtual bool collide(const Sphere& s1, const AABB& s2);
+		virtual bool collide(const Sphere& s1, const Plane& s2);
+		virtual bool collide(const Sphere& s1, const Sphere& s2);
+
+		virtual bool collide(const Plane& s1, const AABB& s2);
+		virtual bool collide(const Plane& s1, const Plane& s2);
+		virtual bool collide(const Plane& s1, const Sphere& s2);
 	};
 }
-

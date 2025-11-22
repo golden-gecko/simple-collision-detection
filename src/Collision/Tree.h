@@ -1,12 +1,26 @@
 #pragma once
 
-#include "Collision\Shape.h"
+#include "Collision\AABB.h"
+#include "Collision\Sphere.h"
 
 namespace Collision
 {
 	class Tree
 	{
 	public:
+		Collision::Shape* createSphere(const std::string& type) const
+		{
+			if ("Sphere" == type)
+			{
+			}
+			
+			throw "Unkown shape type";
+		}
+
+		void destroyShape(Collision::Shape* shape) const
+		{
+		}
+
 		virtual void add(Shape* shape)
 		{
 			shapes.push_back(shape);

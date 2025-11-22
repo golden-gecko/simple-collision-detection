@@ -25,9 +25,6 @@ namespace Collision
 		{
 			this->position += vector;
 		}
-
-		virtual void update() = 0;
-
 	protected:
 		Vector3 position;
 	};

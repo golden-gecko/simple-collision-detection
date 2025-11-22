@@ -28,8 +28,8 @@ namespace Game
 		shapeSceneNode = sceneNode->createChildSceneNode();
 		shapeSceneNode->attachObject(shapeEntity);
 		shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.5f);
-		shapeSceneNode->translate(Ogre::Vector3(0.0f, 20.0f, 0.0f));
+		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getRadius());
+		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 	}
 
 	void Object::update(float time)
@@ -43,10 +43,12 @@ namespace Game
 		}
 		else
 		{
-			sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
-			sceneNode->translate((target - position).normalisedCopy() * 30.0f * time);
+			Ogre::Vector3 velocity = (target - position).normalisedCopy() * 30.0f * time;
 
-			shape->translate((target - position).normalisedCopy() * 30.0f * time);
+			sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
+			sceneNode->translate(velocity);
+
+			shape->translate(velocity);
 		}
 	}
 

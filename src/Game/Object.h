@@ -2,7 +2,8 @@
 
 #include "StdAfx.h"
 
-#include "Collision\Shape.h"
+#include "Collision\AABB.h"
+#include "Collision\Sphere.h"
 
 namespace Game
 {
@@ -21,7 +22,8 @@ namespace Game
 		Ogre::Entity* entity;
 		Ogre::SceneNode* sceneNode;
 
-		Collision::Shape* shape;
+		Collision::Sphere* shape;
+//		Collision::AABB* shape;
 
 		Ogre::Entity* shapeEntity;
 		Ogre::SceneNode* shapeSceneNode;

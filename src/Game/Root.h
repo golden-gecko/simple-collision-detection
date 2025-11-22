@@ -22,14 +22,14 @@ namespace Game
 			return sceneManager->createEntity(name, prefabType);
 		}
 
-		Ogre::SceneNode* createSceneNode() const
-		{
-			return sceneManager->getRootSceneNode()->createChildSceneNode();
-		}
-
 		void destroyEntity(Ogre::Entity* entity) const
 		{
 			sceneManager->destroyEntity(entity);
+		}
+
+		Ogre::SceneNode* createSceneNode() const
+		{
+			return sceneManager->getRootSceneNode()->createChildSceneNode();
 		}
 
 		void destroySceneNode(Ogre::SceneNode* sceneNode) const

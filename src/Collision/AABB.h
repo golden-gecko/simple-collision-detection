@@ -10,6 +10,11 @@ namespace Collision
 		AABB(const Vector3& position, const Vector3& size) : Shape(position), size(size)
 		{
 		}
+		
+		const Vector3& getSize() const
+		{
+			return size;
+		}
 
 		virtual void setSize(const Vector3& size)
 		{

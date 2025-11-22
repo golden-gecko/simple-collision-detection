@@ -7,13 +7,9 @@ namespace Collision
 	class NoTree : public Tree
 	{
 	public:
-		virtual void build()
-		{
-		}
+		virtual void build();
 
 	protected:
-		virtual void createNode()
-		{
-		}
+		virtual void createNode();
 	};
 }

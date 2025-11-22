@@ -99,6 +99,40 @@ namespace Game
 			render = false;
 		}
 
+
+		float cameraSpeed = 100.0f * evt.timeSinceLastFrame;
+
+		if (keyboard->isKeyDown(OIS::KC_W))
+		{
+			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_Z * cameraSpeed);
+		}
+
+		if (keyboard->isKeyDown(OIS::KC_S))
+		{
+			camera->moveRelative(Ogre::Vector3::UNIT_Z * cameraSpeed);
+		}
+
+		if (keyboard->isKeyDown(OIS::KC_D))
+		{
+			camera->moveRelative(Ogre::Vector3::UNIT_X * cameraSpeed);
+		}
+
+		if (keyboard->isKeyDown(OIS::KC_A))
+		{
+			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_X * cameraSpeed);
+		}
+
+		if (keyboard->isKeyDown(OIS::KC_Q))
+		{
+			camera->moveRelative(Ogre::Vector3::UNIT_Y * cameraSpeed);
+		}
+
+		if (keyboard->isKeyDown(OIS::KC_Z))
+		{
+			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_Y * cameraSpeed);
+		}
+
+
 		for (std::vector<Game::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
 		{
 			(*i)->update(evt.timeSinceLastFrame);
