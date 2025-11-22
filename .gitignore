@@ -1,0 +1,8 @@
+build/Debug
+build/ipch
+build/Release
+build/simple-collision-detection.sdf
+build/simple-collision-detection.suo
+build/simple-collision-detection.vcxproj.filters
+build/simple-collision-detection.vcxproj.user
+lib/OgreSDK_vc10_v1-7-3
