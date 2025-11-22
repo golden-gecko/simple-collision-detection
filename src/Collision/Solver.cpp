@@ -14,7 +14,13 @@ namespace Collision
 
 	bool Solver::collide(const AABB& s1, const Plane& s2)
 	{
-		return false;
+		float r = s1.getSize().x * Math::Abs(s2.getNormal().dotProduct(s1.getAxes()[0]))
+				+ s1.getSize().y * Math::Abs(s2.getNormal().dotProduct(s1.getAxes()[1]))
+				+ s1.getSize().z * Math::Abs(s2.getNormal().dotProduct(s1.getAxes()[2]));
+
+		float s = s2.getNormal().dotProduct(s1.getPosition()) - s2.getDistance();
+		
+		return Math::Abs(s) <= r;
 	}
 
 	bool Solver::collide(const AABB& s1, const Sphere& s2)
@@ -32,13 +38,7 @@ namespace Collision
 
 	bool Solver::collide(const Sphere& s1, const Plane& s2)
 	{
-		const Vector3& q = s1.getPosition();
-		const Vector3& n = s2.getNormal();
-
-		float dq = Math::Abs(n.dotProduct(q));
-		float dn = n.dotProduct(n);
-
-		return Math::Abs(dq - s2.getDistance()) < s1.getRadius();
+		return Math::Abs(s1.getPosition().dotProduct(s2.getNormal()) - s2.getDistance()) <= s1.getRadius();
 	}
 
 	bool Solver::collide(const Sphere& s1, const Sphere& s2)

@@ -31,6 +31,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Collision\Tree.cpp" />
+    <ClCompile Include="..\src\Game\Map.cpp" />
     <ClCompile Include="..\src\Game\Object.cpp" />
     <ClCompile Include="..\src\Game\Root.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="..\src\Collision\Sphere.h" />
     <ClInclude Include="..\src\Collision\Tree.h" />
     <ClInclude Include="..\src\Collision\Vector3.h" />
+    <ClInclude Include="..\src\Game\Map.h" />
     <ClInclude Include="..\src\Game\Object.h" />
     <ClInclude Include="..\src\Game\Root.h" />
     <ClInclude Include="..\src\StdAfx.h" />

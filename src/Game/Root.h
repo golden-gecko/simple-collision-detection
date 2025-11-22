@@ -29,6 +29,16 @@ namespace Game
 			sceneManager->destroyEntity(entity);
 		}
 
+		Ogre::ManualObject* createManual(const std::string& name) const
+		{
+			return sceneManager->createManualObject(name);
+		}
+
+		void destroyManual(Ogre::ManualObject* manual) const
+		{
+			sceneManager->destroyManualObject(manual);
+		}
+
 		Ogre::SceneNode* createSceneNode() const
 		{
 			return sceneManager->getRootSceneNode()->createChildSceneNode();

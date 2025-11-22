@@ -24,12 +24,9 @@ namespace Collision
 			this->solver = solver;
 		}
 
-		void setSize(const Vector3& min, const Vector3& max)
+		void setSize(const Vector3& size)
 		{
-			this->min = min;
-			this->max = max;
-
-			size = max - min;
+			this->size = size;
 		}
 
 		virtual void build() = 0;
@@ -39,9 +36,6 @@ namespace Collision
 		Solver* solver;
 
 		std::vector<Shape*> shapes;
-
-		Vector3 min;
-		Vector3 max;
 
 		Vector3 size;
 	};

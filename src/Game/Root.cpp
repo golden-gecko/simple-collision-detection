@@ -4,6 +4,7 @@
 #include "Collision\NoTree.h"
 #include "Collision\Octree.h"
 
+#include "Game\Map.h"
 #include "Game\Object.h"
 #include "Game\Root.h"
 
@@ -81,56 +82,12 @@ namespace Game
 
 
 
-			Collision::Vector3 min = Collision::Vector3(0.0f, 0.0f, 0.0f);
-			Collision::Vector3 max = Collision::Vector3(1000.0f, 300.0f, 1000.0f);
+			Ogre::Vector3 max(1000.0f, 300.0f, 1000.0f);
 
-			Ogre::ManualObject* m = sceneManager->createManualObject("map");
-			
-			m->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
-
-			m->position(min.x, min.y, min.z);
-			m->position(max.x, min.y, min.z);
-			m->position(max.x, min.y, max.z);
-			m->position(min.x, min.y, max.z);
-
-			m->position(min.x, max.y, min.z);
-			m->position(max.x, max.y, min.z);
-			m->position(max.x, max.y, max.z);
-			m->position(min.x, max.y, max.z);
-
-			m->index(0);
-			m->index(1);
-			m->index(1);
-			m->index(2);
-			m->index(2);
-			m->index(3);
-			m->index(3);
-			m->index(0);
-
-			m->index(4);
-			m->index(5);
-			m->index(5);
-			m->index(6);
-			m->index(6);
-			m->index(7);
-			m->index(7);
-			m->index(4);
-
-			m->index(0);
-			m->index(4);
-			m->index(1);
-			m->index(5);
-			m->index(2);
-			m->index(6);
-			m->index(3);
-			m->index(7);
-
-			m->end();
-
-			sceneManager->getRootSceneNode()->attachObject(m);
+			Map* map = new Map("Map", max);
 
 			camera->setPosition(max.x / 2.0f, max.y * 4.0f, max.z * 1.2f);
-			camera->lookAt(max.x / 2.0f, min.y, max.z / 2.0f);
+			camera->lookAt(max.x / 2.0f, 0.0f, max.z / 2.0f);
 
 
 			srand((unsigned int)time(NULL));
@@ -139,16 +96,16 @@ namespace Game
 
 			tree = new Collision::NoTree();
 			tree->setSolver(solver);
-			tree->setSize(min, max);
+			tree->setSize(max);
 
 
-			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), min.x));
-		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, 1.0f, 0.0f), min.y));
-			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), min.z));
+			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), 0.0f));
+		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, 1.0f, 0.0f), 0.0f));
+			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), 0.0f));
 
-			tree->add(new Collision::Plane(Collision::Vector3(-1.0f, 0.0f, 0.0f), max.x));
-		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, -1.0f, 0.0f), max.y));
-			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, -1.0f), max.z));
+			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), max.x));
+		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, 1.0f, 0.0f), max.y));
+			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), max.z));
 
 
 

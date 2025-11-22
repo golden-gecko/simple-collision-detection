@@ -18,7 +18,7 @@ namespace Game
 		sceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
 		sceneNode->setPosition(Ogre::Math::RangeRandom(100.0f, 900.0f), 0.0f, Ogre::Math::RangeRandom(100.0f, 900.0f));
 
-		//*
+		/*
 		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius() * 0.5f);
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
@@ -35,8 +35,9 @@ namespace Game
 		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(manual);
 		//*/
 
-		/*
-		shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBoundingSphereRadius() * 0.5f);
+		//*
+		shape = new Collision::AABB(sceneNode->getPosition(),
+			entity->getMesh()->getBoundingSphereRadius() * 0.5f * Collision::Vector3::UNIT_SCALE);
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
 		shapeEntity->setUserAny(Ogre::Any(this));
@@ -51,11 +52,11 @@ namespace Game
 
 		Root::getSingleton().getTree()->add(shape);
 
-		target.x = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+		target.x = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
 		target.y = 0.0f;
-		target.z = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+		target.z = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
 
-		speed = Ogre::Math::RangeRandom(10.0f, 50.0f);
+		speed = Ogre::Math::RangeRandom(60.0f, 90.0f);
 
 		// Reprezentacja prêdkoœci oraz trasy.
 		manual = Root::getSingleton().getSceneManager()->createManualObject(name + "_manual");
@@ -69,10 +70,10 @@ namespace Game
 
 		if (position.distance(target) < 1.0f)
 		{
-			target.x = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
-			target.z = Ogre::Math::RangeRandom(-100.0f, 1100.0f);
+			target.x = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
+			target.z = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
 
-			speed = Ogre::Math::RangeRandom(10.0f, 50.0f);
+			speed = Ogre::Math::RangeRandom(60.0f, 90.0f);
 		}
 		else
 		{
