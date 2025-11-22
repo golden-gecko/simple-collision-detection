@@ -15,38 +15,35 @@ namespace Collision
 	{
 		std::cout << "Grid::build()" << std::endl;
 
-		// Okreœl wymiary komórki siatki.
-		numberCells = Vector3(size.x / cellSize.x, size.y / cellSize.y, size.z / cellSize.z);
+		// Dzielimy rozmiar siatki przez rozmiar komórki (rozmiarem komórki mo¿e byæ np. rozmiar najwiêkszego obiektu na mapie).
+		// Rozmiar mapy dzielimy przez uzyskan¹ liczbê komórek i otrzymujemy optymalny rozmiar komórek.
+		// Powy¿sza operacja powoduje, ¿e ¿adna z komórek nie bêdzie wychodzi³a poza obszar siatki (mapy).
+		numberCells[0] = (int)Ogre::Math::Floor(size.x / cellSize.x);
+		numberCells[1] = (int)Ogre::Math::Floor(size.y / cellSize.y);
+		numberCells[2] = (int)Ogre::Math::Floor(size.z / cellSize.z);
 
-		// Zbuduj siatkê.
-		std::vector<std::vector<std::vector<Ogre::Entity*>>> entities;
-		std::vector<std::vector<std::vector<Ogre::SceneNode*>>> sceneNodes;
+		cellSize = Vector3(size.x / numberCells[0], size.y / numberCells[1], size.z / numberCells[2]);
 
-		entities.resize((unsigned int)numberCells.x);
-		sceneNodes.resize((unsigned int)numberCells.x);
+		// Po³owa rozmiaru komórki potrzebna do okreœlenia AABB.
+		Vector3 halfSize = cellSize / 2.0f;
 
-		for (unsigned int x = 0; x < (unsigned int)numberCells.x; ++x)
+		// Zbuduj komórki siatki.
+		cells = new Collision::AABB[numberCells[0] * numberCells[1] * numberCells[2]];
+		
+		for (int z = 0; z < numberCells[2]; ++z)
 		{
-			entities[x].resize((unsigned int)numberCells.y);
-			sceneNodes[x].resize((unsigned int)numberCells.y);
-
-			for (unsigned int y = 0; y < (unsigned int)numberCells.y; ++y)
+			for (int y = 0; y < numberCells[1]; ++y)
 			{
-				entities[x][y].resize((unsigned int)numberCells.z);
-				sceneNodes[x][y].resize((unsigned int)numberCells.z);
-
-				for (unsigned int z = 0; z < (unsigned int)numberCells.z; ++z)
+				for (int x = 0; x < numberCells[0]; ++x)
 				{
-					std::stringstream ss;
-					ss << "grid_" << x << "_" << y << "_" << z;
+					int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
 
-					entities[x][y][z] = Game::Root::getSingleton().createEntity(ss.str(), Ogre::SceneManager::PT_CUBE);
-					entities[x][y][z]->setMaterialName("Tree");
+					cells[offset].setPosition(Vector3(
+						x * cellSize.x + halfSize.x,
+						y * cellSize.y + halfSize.y,
+						z * cellSize.z + halfSize.z));
 
-					sceneNodes[x][y][z] = Game::Root::getSingleton().createSceneNode();
-					sceneNodes[x][y][z]->attachObject(entities[x][y][z]);
-					sceneNodes[x][y][z]->setScale(cellSize * 0.01f);
-					sceneNodes[x][y][z]->setPosition(cellSize.x * x, cellSize.y * y, cellSize.z * z);
+					cells[offset].setSize(halfSize);
 				}
 			}
 		}

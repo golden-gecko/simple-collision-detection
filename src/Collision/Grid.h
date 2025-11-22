@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Collision\AABB.h"
 #include "Collision\Tree.h"
 
 namespace Collision
@@ -17,8 +18,29 @@ namespace Collision
 		{
 			cellSize = size;
 		}
+
+		const Vector3& getCellSize() const 
+		{
+			return cellSize;
+		}
+
+		const int* getNumberCells() const
+		{
+			return numberCells;
+		}
+
+		const AABB& getCell(int offset) const
+		{
+			return cells[offset];
+		}
+
+		const Collision::AABB* getCells() const
+		{
+			return cells;
+		}
 	protected:
 		Vector3 cellSize;
-		Vector3 numberCells;
+		int numberCells[3];
+		Collision::AABB* cells;
 	};
 }

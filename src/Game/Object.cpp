@@ -8,7 +8,7 @@
 
 namespace Game
 {
-	Object::Object(const std::string& name, const std::string& mesh) : name(name), mesh(mesh), target(Ogre::Vector3::ZERO)
+	Object::Object(const std::string& name, const std::string& mesh, Map* map) : name(name), mesh(mesh), target(Ogre::Vector3::ZERO), map(map)
 	{
 		entity = Root::getSingleton().createEntity(name, mesh);
 		entity->setUserAny(Ogre::Any(this));
@@ -16,9 +16,11 @@ namespace Game
 		sceneNode = Root::getSingleton().createSceneNode();
 		sceneNode->attachObject(entity);
 		sceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-		sceneNode->setPosition(Ogre::Math::RangeRandom(100.0f, 900.0f), 0.0f, Ogre::Math::RangeRandom(100.0f, 900.0f));
+		sceneNode->setPosition(
+			Ogre::Math::RangeRandom(100.0f, map->getSize().x - 100.0f), 0.0f,
+			Ogre::Math::RangeRandom(100.0f, map->getSize().z - 100.0f));
 
-		/*
+		//*
 		shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius() * 0.5f);
 
 		shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
@@ -31,11 +33,11 @@ namespace Game
 		shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * 0.01f * shape->getRadius() * 2.0f);
 		shapeSceneNode->translate(entity->getBoundingBox().getCenter());
 
-		manual = Root::getSingleton().getSceneManager()->createManualObject(name + "_m");
-		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(manual);
+		path = Root::getSingleton().getSceneManager()->createManualObject(name + "_m");
+		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(path);
 		//*/
 
-		//*
+		/*
 		shape = new Collision::AABB(sceneNode->getPosition(),
 			entity->getMesh()->getBoundingSphereRadius() * 0.5f * Collision::Vector3::UNIT_SCALE);
 
@@ -52,16 +54,18 @@ namespace Game
 
 		Root::getSingleton().getTree()->add(shape);
 
-		target.x = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
-		target.y = 0.0f;
-		target.z = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
-
-		speed = Ogre::Math::RangeRandom(60.0f, 90.0f);
+		setRandomTarget();
+		setRandomSpeed();
 
 		// Reprezentacja prêdkoœci oraz trasy.
-		manual = Root::getSingleton().getSceneManager()->createManualObject(name + "_manual");
+		path = Root::getSingleton().getSceneManager()->createManualObject(name + "_path");
+		path->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
+		path->position(Ogre::Vector3::ZERO);
+		path->position(Ogre::Vector3::UNIT_X);
+		path->end();
 
-		Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(manual);
+		pathSceneNode = sceneNode->createChildSceneNode();
+		pathSceneNode->attachObject(path);
 	}
 
 	void Object::update(float time)
@@ -70,10 +74,8 @@ namespace Game
 
 		if (position.distance(target) < 1.0f)
 		{
-			target.x = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
-			target.z = Ogre::Math::RangeRandom(-300.0f, 1300.0f);
-
-			speed = Ogre::Math::RangeRandom(60.0f, 90.0f);
+			setRandomTarget();
+			setRandomSpeed();
 		}
 		else
 		{
@@ -89,7 +91,7 @@ namespace Game
 
 				shape->translate(-velocity);
 
-				target = position - velocity * 100.0f;
+				target = position - velocity * 200.0f;
 			}
 			else
 			{
@@ -100,11 +102,7 @@ namespace Game
 
 				shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
 
-				manual->clear();
-				manual->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
-				manual->position(position);
-				manual->position(target);
-				manual->end();
+				pathSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * (target - position).length());
 			}
 		}
 	}
@@ -114,5 +112,17 @@ namespace Game
 		delete shape;
 		Root::getSingleton().destroyEntity(entity);
 		Root::getSingleton().destroySceneNode(sceneNode);
+	}
+
+	void Object::setRandomTarget()
+	{
+		target.x = Ogre::Math::RangeRandom(-1000.0f, map->getSize().x + 1000.0f);
+		target.y = 0.0f;
+		target.z = Ogre::Math::RangeRandom(-1000.0f, map->getSize().z + 1000.0f);
+	}
+
+	void Object::setRandomSpeed()
+	{
+		speed = Ogre::Math::RangeRandom(100.0f, 100.0f);
 	}
 }

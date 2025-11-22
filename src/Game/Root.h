@@ -66,10 +66,7 @@ namespace Game
 			return true;
 		}
 
-		virtual bool mouseMoved(const OIS::MouseEvent& arg)
-		{
-			return true;
-		}
+		virtual bool mouseMoved(const OIS::MouseEvent& arg);
 
 		virtual bool mousePressed(const OIS::MouseEvent& arg, OIS::MouseButtonID id)
 		{

@@ -33,7 +33,7 @@ namespace Game
 			}
 			else
 			{
-				camera->setFarClipDistance(50000.0f);
+				camera->setFarClipDistance(20000.0f);
 			}
 
 			viewport = renderWindow->addViewport(camera);
@@ -82,30 +82,29 @@ namespace Game
 
 
 
-			Ogre::Vector3 max(1000.0f, 300.0f, 1000.0f);
+			Ogre::Vector3 size(10000.0f, 1000.0f, 10000.0f);
 
-			Map* map = new Map("Map", max);
+			Map* map = new Map("Map", size);
 
-			camera->setPosition(max.x / 2.0f, max.y * 4.0f, max.z * 1.2f);
-			camera->lookAt(max.x / 2.0f, 0.0f, max.z / 2.0f);
+			camera->setPosition(size.x / 2.0f, size.y * 4.0f, size.z * 1.2f);
+			camera->lookAt(size.x / 2.0f, 0.0f, size.z / 2.0f);
 
 
 			srand((unsigned int)time(NULL));
 
 			Collision::Solver* solver = new Collision::Solver();
 
-			tree = new Collision::NoTree();
+//			tree = new Collision::NoTree();
+			tree = new Collision::Grid();
 			tree->setSolver(solver);
-			tree->setSize(max);
+			tree->setSize(size);
 
 
 			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), 0.0f));
-		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, 1.0f, 0.0f), 0.0f));
 			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), 0.0f));
 
-			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), max.x));
-		//	tree->add(new Collision::Plane(Collision::Vector3(0.0f, 1.0f, 0.0f), max.y));
-			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), max.z));
+			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), size.x));
+			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), size.z));
 
 
 
@@ -113,18 +112,20 @@ namespace Game
 
 			if (grid)
 			{
-				grid->setCellSize(Ogre::Vector3(100.0f, 100.0f, 100.0f));
+				grid->setCellSize(Ogre::Vector3(1000.0f, 500.0f, 1000.0f));
 			}
 
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < 50; ++i)
 			{
 				std::stringstream ss;
 				ss << "#" << i;
 
-				objects.push_back(new Game::Object(ss.str(), "robot.mesh"));
+				objects.push_back(new Game::Object(ss.str(), "robot.mesh", map));
 			}
 
 			tree->build();
+			map->createGrid(grid);
+
 			root->startRendering();
 
 
@@ -141,7 +142,7 @@ namespace Game
 	bool Root::frameStarted(const Ogre::FrameEvent& evt)
 	{
 		std::stringstream ss;
-		ss << renderWindow->getAverageFPS() << " FPS";
+		ss << renderWindow->getLastFPS() << " FPS";
 
 		size_t windowHnd = 0;
 		renderWindow->getCustomAttribute("WINDOW", &windowHnd);
@@ -158,7 +159,7 @@ namespace Game
 		}
 
 
-		float cameraSpeed = 300.0f * evt.timeSinceLastFrame;
+		float cameraSpeed = 1000.0f * evt.timeSinceLastFrame;
 
 		if (keyboard->isKeyDown(OIS::KC_W))
 		{
@@ -197,5 +198,13 @@ namespace Game
 		}
 
 		return render;
+	}
+
+	bool Root::mouseMoved(const OIS::MouseEvent& arg)
+	{
+		camera->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
+		camera->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
+
+		return true;
 	}
 }
