@@ -8,26 +8,29 @@
 #include "App\Object.h"
 #include "App\Root.h"
 
-App::Root* Ogre::Singleton<App::Root>::ms_Singleton = NULL;
+App::Root* Ogre::Singleton<App::Root>::msSingleton = NULL;
 
 namespace App
 {
 	Root::Root() : render(true), moveObjects(true)
 	{
-		root = new Ogre::Root();
+		root = new Ogre::Root("Plugins.cfg", "Ogre.cfg", "Ogre.log");
 
-		if (root->restoreConfig() || root->showConfigDialog())
+		if (root->restoreConfig() || root->showConfigDialog(OgreBites::getNativeConfigDialog()))
 		{
 			renderWindow = root->initialise(true);
 			renderWindow->setDeactivateOnFocusChange(false);
 
-			sceneManager = root->createSceneManager(Ogre::ST_GENERIC);
+			sceneManager = root->createSceneManager();
 
 			camera = sceneManager->createCamera("Camera");
-			camera->setPosition(0.0f, 300.0f, 300.0f);
-			camera->lookAt(0.0f, 0.0f, 0.0f);
 			camera->setNearClipDistance(0.1f);
-			
+
+			cameraNode = createSceneNode();
+			cameraNode->attachObject(camera);
+			cameraNode->setPosition(0.0f, 300.0f, 300.0f);
+			cameraNode->lookAt(Ogre::Vector3::ZERO, Ogre::Node::TransformSpace::TS_WORLD);
+
 			if (root->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_INFINITE_FAR_PLANE))
 			{
 				camera->setFarClipDistance(0.0f);
@@ -87,8 +90,8 @@ namespace App
 
 			Map* map = new Map("Map", size);
 
-			camera->setPosition(size.x / 2.0f, size.y * 4.0f, size.z * 1.2f);
-			camera->lookAt(size.x / 2.0f, 0.0f, size.z / 2.0f);
+			cameraNode->setPosition(size.x / 2.0f, size.y * 4.0f, size.z * 1.2f);
+			cameraNode->lookAt(Ogre::Vector3(size.x / 2.0f, 0.0f, size.z / 2.0f), Ogre::Node::TransformSpace::TS_WORLD);
 
 
 			srand((unsigned int)time(NULL));
@@ -138,7 +141,7 @@ namespace App
 				std::stringstream ss;
 				ss << "#" << i;
 
-				objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
+				// objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
 			}
 			
 			tree->build();
@@ -170,7 +173,7 @@ namespace App
 	bool Root::frameStarted(const Ogre::FrameEvent& evt)
 	{
 		std::stringstream ss;
-		ss << renderWindow->getLastFPS() << " FPS";
+		ss << renderWindow->getStatistics().lastFPS << " FPS";
 
 		size_t windowHnd = 0;
 		renderWindow->getCustomAttribute("WINDOW", &windowHnd);
@@ -191,32 +194,32 @@ namespace App
 
 		if (keyboard->isKeyDown(OIS::KC_W))
 		{
-			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_Z * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::NEGATIVE_UNIT_Z * cameraSpeed);
 		}
 
 		if (keyboard->isKeyDown(OIS::KC_S))
 		{
-			camera->moveRelative(Ogre::Vector3::UNIT_Z * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::UNIT_Z * cameraSpeed);
 		}
 
 		if (keyboard->isKeyDown(OIS::KC_D))
 		{
-			camera->moveRelative(Ogre::Vector3::UNIT_X * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::UNIT_X * cameraSpeed);
 		}
 
 		if (keyboard->isKeyDown(OIS::KC_A))
 		{
-			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_X * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::NEGATIVE_UNIT_X * cameraSpeed);
 		}
 
 		if (keyboard->isKeyDown(OIS::KC_Q))
 		{
-			camera->moveRelative(Ogre::Vector3::UNIT_Y * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::UNIT_Y * cameraSpeed);
 		}
 
 		if (keyboard->isKeyDown(OIS::KC_Z))
 		{
-			camera->moveRelative(Ogre::Vector3::NEGATIVE_UNIT_Y * cameraSpeed);
+			cameraNode->translate(Ogre::Vector3::NEGATIVE_UNIT_Y * cameraSpeed);
 		}
 
 
@@ -230,8 +233,8 @@ namespace App
 
 	bool Root::mouseMoved(const OIS::MouseEvent& arg)
 	{
-		camera->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
-		camera->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
+		cameraNode->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
+		cameraNode->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
 
 		return true;
 	}

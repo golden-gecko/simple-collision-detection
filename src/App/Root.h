@@ -19,11 +19,6 @@ namespace App
 		{
 			return sceneManager->createEntity(name, mesh);
 		}
-		
-		Ogre::Entity* createEntity(const std::string& name, Ogre::SceneManager::PrefabType prefabType) const
-		{
-			return sceneManager->createEntity(name, prefabType);
-		}
 
 		void destroyEntity(Ogre::Entity* entity) const
 		{
@@ -114,6 +109,7 @@ namespace App
 		Ogre::RenderWindow* renderWindow;
 		Ogre::SceneManager* sceneManager;
 		Ogre::Camera* camera;
+		Ogre::SceneNode* cameraNode;
 		Ogre::Viewport* viewport;
 
 		OIS::InputManager* inputManager;
