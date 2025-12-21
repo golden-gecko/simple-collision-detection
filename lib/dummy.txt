@@ -1,3 +1,0 @@
-Place Ogre3D here.
-
-http://www.ogre3d.org/download
