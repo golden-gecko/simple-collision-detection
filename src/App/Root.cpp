@@ -62,7 +62,6 @@ namespace App
 			keyboard->setEventCallback(this);
 			mouse->setEventCallback(this);
 
-
 			Ogre::ConfigFile resources;
 			resources.load("Resources.cfg");
 
@@ -85,7 +84,6 @@ namespace App
 
 			Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 			
-
 			Ogre::Vector3 size(10000.0f, 2000.0f, 10000.0f);
 
 			Map* map = new Map("Map", size);
@@ -100,9 +98,9 @@ namespace App
 			Collision::Solver* solver = new Collision::Solver();
 
 
-			tree = new Collision::NoTree();
+//			tree = new Collision::NoTree();
 //			tree = new Collision::Grid();
-//			tree = new Collision::Octree();
+			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
 			tree->setSize(size);
@@ -156,9 +154,7 @@ namespace App
 				map->createOctree(octree);
 			}
 
-
 			root->startRendering();
-
 
 			for (std::vector<App::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
 			{
