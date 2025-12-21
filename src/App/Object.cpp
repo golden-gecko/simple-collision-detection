@@ -87,6 +87,8 @@ namespace App
 
 	void Object::update(float time)
 	{
+		return;
+
 		const Ogre::Vector3& position = sceneNode->getPosition();
 
 		if (position.distance(target) < 1.0f)

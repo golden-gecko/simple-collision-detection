@@ -100,9 +100,9 @@ namespace App
 			Collision::Solver* solver = new Collision::Solver();
 
 
-//			tree = new Collision::NoTree();
+			tree = new Collision::NoTree();
 //			tree = new Collision::Grid();
-			tree = new Collision::Octree();
+//			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
 			tree->setSize(size);
@@ -141,7 +141,7 @@ namespace App
 				std::stringstream ss;
 				ss << "#" << i;
 
-				// objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
+				objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
 			}
 			
 			tree->build();
