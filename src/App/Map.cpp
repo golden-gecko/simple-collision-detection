@@ -22,6 +22,16 @@ namespace App
 		manual->position(size.x, size.y, size.z);
 		manual->position(0.0f, size.y, size.z);
 
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+		manual->normal(Ogre::Vector3::UNIT_Y);
+
 		manual->index(0);
 		manual->index(1);
 		manual->index(1);

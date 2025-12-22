@@ -79,6 +79,12 @@ namespace App
 		path->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
 		path->position(Ogre::Vector3::ZERO);
 		path->position(Ogre::Vector3::UNIT_X);
+		path->normal(Ogre::Vector3::UNIT_X);
+		path->normal(Ogre::Vector3::UNIT_X);
+		path->textureCoord(0);
+		path->textureCoord(1);
+		path->index(0);
+		path->index(1);
 		path->end();
 
 		pathSceneNode = sceneNode->createChildSceneNode();
@@ -87,8 +93,6 @@ namespace App
 
 	void Object::update(float time)
 	{
-		return;
-
 		const Ogre::Vector3& position = sceneNode->getPosition();
 
 		if (position.distance(target) < 1.0f)

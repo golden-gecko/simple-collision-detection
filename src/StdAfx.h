@@ -4,10 +4,9 @@
 
 #pragma warning(push, 0)
 
-#include "Ogre.h"
-#include "OIS.h"
+#include <Ogre.h>
 
-#include "Bites\OgreBitesConfigDialog.h"
-#include "Bites\OgreWindowEventUtilities.h"
+#include <Bites/OgreApplicationContext.h>
+#include <Bites/OgreBitesConfigDialog.h>
 
 #pragma warning(pop)

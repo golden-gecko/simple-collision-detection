@@ -7,13 +7,145 @@
 
 #include "App\Object.h"
 
+namespace Gecko
+{
+    class Camera
+    {
+    public:
+        Camera(Ogre::SceneManager* sceneManager, const std::string& name) : sceneManager(sceneManager)
+        {
+            camera = sceneManager->createCamera(name);
+            camera->setNearClipDistance(5.0f);
+            camera->setAutoAspectRatio(true);
+
+            sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+            sceneNode->setPosition(0.0f, 0.0f, 15.0f);
+            sceneNode->lookAt(Ogre::Vector3(0.0f, 0.0f, -1.0f), Ogre::Node::TS_PARENT);
+            sceneNode->attachObject(camera);
+        }
+
+        ~Camera()
+        {
+            sceneManager->destroySceneNode(sceneNode);
+            sceneManager->destroyCamera(camera);
+        }
+
+        Ogre::Camera* getCamera() const
+        {
+            return camera;
+        }
+
+    protected:
+        Ogre::SceneManager* sceneManager;
+        Ogre::Camera* camera;
+        Ogre::SceneNode* sceneNode;
+    };
+
+    class GameObject
+    {
+    public:
+        GameObject(Ogre::SceneManager* sceneManager, const std::string& name) : sceneManager(sceneManager)
+        {
+            entity = sceneManager->createEntity(name);
+
+            sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+            sceneNode->attachObject(entity);
+        }
+
+        ~GameObject()
+        {
+            sceneManager->destroySceneNode(sceneNode);
+            sceneManager->destroyEntity(entity);
+        }
+
+    protected:
+        Ogre::SceneManager* sceneManager;
+        Ogre::Entity* entity;
+        Ogre::SceneNode* sceneNode;
+    };
+
+    class KeyHandler : public OgreBites::InputListener
+    {
+    private:
+        bool keyPressed(const OgreBites::KeyboardEvent& evt) override
+        {
+            if (evt.keysym.sym == OgreBites::SDLK_ESCAPE)
+            {
+                Ogre::Root::getSingleton().queueEndRendering();
+            }
+
+            return true;
+        }
+    };
+
+    class Light
+    {
+    public:
+        Light(Ogre::SceneManager* sceneManager, const std::string& name) : sceneManager(sceneManager)
+        {
+            light = sceneManager->createLight(name);
+            light->setCastShadows(false);
+            light->setType(Ogre::Light::LightTypes::LT_DIRECTIONAL);
+
+            sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+            sceneNode->attachObject(light);
+            sceneNode->lookAt(Ogre::Vector3f(-1.0f, -1.0f, -1.0f), Ogre::Node::TransformSpace::TS_PARENT);
+        }
+
+        ~Light()
+        {
+            sceneManager->destroySceneNode(sceneNode);
+            sceneManager->destroyLight(light);
+        }
+
+    protected:
+        Ogre::SceneManager* sceneManager;
+        Ogre::Light* light;
+        Ogre::SceneNode* sceneNode;
+    };
+
+    class App : public Ogre::Singleton<App>
+    {
+    public:
+        App()
+        {
+            ctx = std::make_shared<OgreBites::ApplicationContext>("OgreTutorialApp");
+            ctx->initApp();
+        }
+
+        ~App()
+        {
+            ctx->closeApp();
+        }
+
+        void run()
+        {
+            ctx->getRoot()->startRendering();
+        }
+
+        std::shared_ptr<OgreBites::ApplicationContext> getContext() const
+        {
+            return ctx;
+        }
+
+        void setCamera(Ogre::Camera* camera)
+        {
+            ctx->getRenderWindow()->addViewport(camera)->setBackgroundColour(Ogre::ColourValue::White);
+        }
+
+    protected:
+        std::shared_ptr<OgreBites::ApplicationContext> ctx;
+    };
+}
+
 namespace App
 {
-	class Root : public Ogre::Singleton<Root>, Ogre::FrameListener, Ogre::WindowEventListener,
-		OIS::KeyListener, OIS::MouseListener, OIS::JoyStickListener
+	class Root : public Ogre::Singleton<Root>, Ogre::FrameListener, OgreBites::InputListener
 	{
 	public:
 		Root();
+
+        void run();
 
 		Ogre::Entity* createEntity(const std::string& name, const std::string& mesh) const
 		{
@@ -52,39 +184,9 @@ namespace App
 			render = false;
 		}
 
-		virtual bool keyPressed(const OIS::KeyEvent& arg);
+		bool keyPressed(const OgreBites::KeyboardEvent& evt) override;
 
-		virtual bool keyReleased(const OIS::KeyEvent& arg)
-		{
-			return true;
-		}
-
-		virtual bool mouseMoved(const OIS::MouseEvent& arg);
-
-		virtual bool mousePressed(const OIS::MouseEvent& arg, OIS::MouseButtonID id)
-		{
-			return true;
-		}
-
-		virtual bool mouseReleased(const OIS::MouseEvent& arg, OIS::MouseButtonID id)
-		{
-			return true;
-		}
-
-		virtual bool buttonPressed(const OIS::JoyStickEvent& arg, int button)
-		{
-			return true;
-		}
-
-		virtual bool buttonReleased(const OIS::JoyStickEvent& arg, int button) 
-		{
-			return true;
-		}
-
-		virtual bool axisMoved(const OIS::JoyStickEvent& arg, int axis)
-		{
-			return true;
-		}
+		bool mouseMoved(const OgreBites::MouseMotionEvent& evt) override;
 
 		Ogre::SceneManager* getSceneManager() const
 		{
@@ -105,6 +207,8 @@ namespace App
 			this->moveObjects = moveObjects;
 		}
 	protected:
+		std::shared_ptr<Gecko::App> gecko;
+
 		Ogre::Root* root;
 		Ogre::RenderWindow* renderWindow;
 		Ogre::SceneManager* sceneManager;
@@ -112,17 +216,13 @@ namespace App
 		Ogre::SceneNode* cameraNode;
 		Ogre::Viewport* viewport;
 
-		OIS::InputManager* inputManager;
-		OIS::Keyboard* keyboard;
-		OIS::Mouse* mouse;
-
 		bool render;
 		bool moveObjects;
 
-		std::vector<App::Object*> objects;
+		std::vector<Object*> objects;
 
 		Collision::Tree* tree;
-		Collision::Grid* grid;
-		Collision::Octree* octree;
+        Collision::Grid* grid;
+        Collision::Octree* octree;
 	};
 }

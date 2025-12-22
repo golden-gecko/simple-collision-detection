@@ -8,20 +8,34 @@
 #include "App\Object.h"
 #include "App\Root.h"
 
+Gecko::App* Ogre::Singleton<Gecko::App>::msSingleton = nullptr;
+
 App::Root* Ogre::Singleton<App::Root>::msSingleton = NULL;
 
 namespace App
 {
 	Root::Root() : render(true), moveObjects(true)
 	{
-		root = new Ogre::Root("Plugins.cfg", "Ogre.cfg", "Ogre.log");
+	}
+
+	void Root::run()
+	{
+		std::unique_ptr<Gecko::App> app = std::make_unique<Gecko::App>();
+
+		root = app->getContext()->getRoot();
 
 		if (root->restoreConfig() || root->showConfigDialog(OgreBites::getNativeConfigDialog()))
 		{
-			renderWindow = root->initialise(true);
-			renderWindow->setDeactivateOnFocusChange(false);
-
 			sceneManager = root->createSceneManager();
+
+			// Not used with OpenGL render system.
+			// Ogre::RTShader::ShaderGenerator::getSingletonPtr()->addSceneManager(sceneManager);
+
+			std::shared_ptr light = std::make_shared<Gecko::Light>(sceneManager, "MainLight");
+
+
+			// std::shared_ptr camera = std::make_shared<Gecko::Camera>(sceneManager, "Camera");
+
 
 			camera = sceneManager->createCamera("Camera");
 			camera->setNearClipDistance(0.1f);
@@ -40,28 +54,112 @@ namespace App
 				camera->setFarClipDistance(20000.0f);
 			}
 
-			viewport = renderWindow->addViewport(camera);
-			viewport->setBackgroundColour(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
 
-			root->addFrameListener(this);
-			Ogre::WindowEventUtilities::addWindowEventListener(renderWindow, this);
+			std::shared_ptr gameObject = std::make_shared<Gecko::GameObject>(sceneManager, "robot.mesh");
+			std::shared_ptr keyHandler = std::make_shared<Gecko::KeyHandler>();
 
-			OIS::ParamList pl;
-			size_t windowHnd = 0;
-			std::ostringstream windowHndStr;
-			renderWindow->getCustomAttribute("WINDOW", &windowHnd);
-			windowHndStr << windowHnd;
-			pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
-			pl.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
-			pl.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
+			app->setCamera(camera);
+			app->getContext()->addInputListener(keyHandler.get());
 
-			inputManager = OIS::InputManager::createInputSystem(pl);
-			keyboard = static_cast<OIS::Keyboard*>(inputManager->createInputObject(OIS::OISKeyboard, true));
-			mouse = static_cast<OIS::Mouse*>(inputManager->createInputObject(OIS::OISMouse, true));
 
-			keyboard->setEventCallback(this);
-			mouse->setEventCallback(this);
 
+			Ogre::Vector3 size(10000.0f, 2000.0f, 10000.0f);
+
+			Map* map = new Map("Map", size);
+
+
+			cameraNode->setPosition(size.x / 2.0f, size.y * 4.0f, size.z * 1.2f);
+			cameraNode->lookAt(Ogre::Vector3(size.x / 2.0f, 0.0f, size.z / 2.0f), Ogre::Node::TransformSpace::TS_WORLD);
+
+
+			srand((unsigned int)time(NULL));
+
+
+			Collision::Solver* solver = new Collision::Solver();
+
+
+			// tree = new Collision::NoTree();
+			// tree = new Collision::Grid();
+			tree = new Collision::Octree();
+
+			tree->setSolver(solver);
+			tree->setSize(size);
+
+
+			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), 0.0f));
+			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), 0.0f));
+
+			tree->add(new Collision::Plane(Collision::Vector3(1.0f, 0.0f, 0.0f), size.x));
+			tree->add(new Collision::Plane(Collision::Vector3(0.0f, 0.0f, 1.0f), size.z));
+
+
+			grid = dynamic_cast<Collision::Grid*>(tree);
+			octree = dynamic_cast<Collision::Octree*>(tree);
+
+			if (grid)
+			{
+				grid->setCellSize(Ogre::Vector3(1000.0f, 500.0f, 1000.0f));
+			}
+			else if (octree)
+			{
+				octree->setMaxDepth(4);
+			}
+
+
+			const int meshCount = 3;
+			const std::string meshes[meshCount] =
+			{
+				"robot.mesh",
+				"RZR-002.mesh",
+				"tudorhouse.mesh"
+			};
+
+			for (int i = 0; i < 50; ++i)
+			{
+				std::stringstream ss;
+				ss << "#" << i;
+
+				objects.push_back(new App::Object(ss.str(), meshes[rand() % meshCount], map));
+			}
+
+			tree->build();
+
+
+			if (grid)
+			{
+				map->createGrid(grid);
+			}
+			else if (octree)
+			{
+				map->createOctree(octree);
+			}
+
+			app->run();
+
+			// root->startRendering();
+
+			for (std::vector<App::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
+			{
+				delete (*i);
+			}
+
+			delete tree;
+			delete solver;
+		}
+
+		return;
+
+		/*
+
+			// viewport = renderWindow->addViewport(camera);
+			// viewport->setBackgroundColour(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
+
+			// root->addFrameListener(this);
+
+			Gecko::App::getSingleton().setCamera(camera);
+			// app->getContext()->addInputListener(keyHandler.get());
+
+			/*
 			Ogre::ConfigFile resources;
 			resources.load("Resources.cfg");
 
@@ -98,8 +196,8 @@ namespace App
 			Collision::Solver* solver = new Collision::Solver();
 
 
-//			tree = new Collision::NoTree();
-//			tree = new Collision::Grid();
+			// tree = new Collision::NoTree();
+			// tree = new Collision::Grid();
 			tree = new Collision::Octree();
 
 			tree->setSolver(solver);
@@ -147,14 +245,15 @@ namespace App
 
 			if (grid)
 			{
-				map->createGrid(grid);
+				// map->createGrid(grid);
 			}
 			else if (octree)
 			{
-				map->createOctree(octree);
+				// map->createOctree(octree);
 			}
 
-			root->startRendering();
+			Gecko::App::getSingleton().run();
+			// root->startRendering();
 
 			for (std::vector<App::Object*>::const_iterator i = objects.begin(); i != objects.end(); ++i)
 			{
@@ -164,10 +263,12 @@ namespace App
 			delete tree;
 			delete solver;
 		}
+		*/
 	}
 
 	bool Root::frameStarted(const Ogre::FrameEvent& evt)
 	{
+		/*
 		std::stringstream ss;
 		ss << renderWindow->getStatistics().lastFPS << " FPS";
 
@@ -223,24 +324,29 @@ namespace App
 		{
 			(*i)->update(evt.timeSinceLastFrame);
 		}
+		*/
 
 		return render;
 	}
 
-	bool Root::mouseMoved(const OIS::MouseEvent& arg)
+	bool Root::mouseMoved(const OgreBites::MouseMotionEvent& evt)
 	{
+		/*
 		cameraNode->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
 		cameraNode->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
+		*/
 
 		return true;
 	}
 
-	bool Root::keyPressed(const OIS::KeyEvent& arg)
+	bool Root::keyPressed(const OgreBites::KeyboardEvent& evt)
 	{
+		/*
 		if (arg.key == OIS::KC_M)
 		{
 			moveObjects = !moveObjects;
 		}
+		*/
 
 		return true;
 	}
