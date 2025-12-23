@@ -1,10 +1,10 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "Octree.h"
+#include "Octree.hpp"
 
 namespace Collision
 {
-	Octree::Octree() : maxDepth(8), root(NULL)
+	Octree::Octree() : maxDepth(8), root(nullptr)
 	{
 	}
 	
@@ -19,6 +19,11 @@ namespace Collision
 	void Octree::build()
 	{
 		std::cout << "Octre::build()" << std::endl;
+
+		if (root)
+		{
+			delete root;
+		}
 
 		// Zbuduj pierwszy wêze³.
 		root = new Cell(1);
@@ -95,7 +100,7 @@ namespace Collision
 				if (isCollision == false)
 				{
 					delete newCells[i];
-					newCells[i] = NULL;
+					newCells[i] = nullptr;
 				}
 			}
 

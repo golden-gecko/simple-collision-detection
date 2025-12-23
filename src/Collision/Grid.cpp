@@ -1,9 +1,9 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "Collision\AABB.h"
-#include "Collision\Grid.h"
+#include "Collision/AABB.hpp"
+#include "Collision/Grid.hpp"
 
-#include "App\Root.h"
+#include "Root.hpp"
 
 namespace Collision
 {
@@ -59,7 +59,7 @@ namespace Collision
 	{
 		Plane* plane = dynamic_cast<Plane*>(shape);
 
-		if (plane == NULL)
+		if (plane == nullptr)
 		{
 			// Oblicz wspó³rzêdne komórki.
 			Vector3 cellCoordinates = shape->getPosition() / getCellSize();

@@ -1,34 +1,10 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "App\Root.h"
+#include "Root.hpp"
 
 int main()
 {
-	delete new App::Root();
+	std::make_unique<Root>()->run();
 
 	return 0;
 }
-
-/*
-
-	class AABB : public Object
-	{
-	};
-
-	class OBB : public Object
-	{
-	};
-
-	class Tree
-	{
-	};
-
-	class SphereTree : public Tree
-	{
-	};
-
-	class Octree : public Tree
-	{
-	};
-
-*/
