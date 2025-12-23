@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 4.2)
 
 project(simple-collision-detection)
 
-file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/lib/OIS/include)
 
 target_link_libraries(${PROJECT_NAME} OgreBites)
 
@@ -19,3 +20,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD_REQUIRED YES
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/system
 )
+
+target_link_libraries(${PROJECT_NAME} debug ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS_d.lib)
+target_link_libraries(${PROJECT_NAME} optimized ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS.lib)

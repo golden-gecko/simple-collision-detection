@@ -1,6 +1,6 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "Collision\Plane.h"
+#include "Collision/Plane.hpp"
 
 namespace Collision
 {

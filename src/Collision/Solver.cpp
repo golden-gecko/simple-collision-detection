@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "Collision\Math.h"
-#include "Collision\Solver.h"
+#include "Collision/Math.hpp"
+#include "Collision/Solver.hpp"
 
 namespace Collision
 {

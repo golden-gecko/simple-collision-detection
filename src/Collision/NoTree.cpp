@@ -1,6 +1,6 @@
-#include "StdAfx.h"
+#include "PCH.hpp"
 
-#include "Collision\NoTree.h"
+#include "Collision/NoTree.hpp"
 
 namespace Collision
 {
