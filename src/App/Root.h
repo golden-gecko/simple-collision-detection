@@ -19,8 +19,6 @@ namespace Gecko
             camera->setAutoAspectRatio(true);
 
             sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-            sceneNode->setPosition(0.0f, 0.0f, 15.0f);
-            sceneNode->lookAt(Ogre::Vector3(0.0f, 0.0f, -1.0f), Ogre::Node::TS_PARENT);
             sceneNode->attachObject(camera);
         }
 
@@ -102,6 +100,17 @@ namespace Gecko
         Ogre::SceneManager* sceneManager;
         Ogre::Light* light;
         Ogre::SceneNode* sceneNode;
+    };
+
+    class Scene
+    {
+    public:
+        Scene(Ogre::SceneManager* sceneManager) : sceneManager(sceneManager)
+        {
+        }
+
+    protected:
+        Ogre::SceneManager* sceneManager;
     };
 
     class App : public Ogre::Singleton<App>
@@ -207,14 +216,11 @@ namespace App
 			this->moveObjects = moveObjects;
 		}
 	protected:
-		std::shared_ptr<Gecko::App> gecko;
+		std::shared_ptr<Gecko::App> app;
 
-		Ogre::Root* root;
-		Ogre::RenderWindow* renderWindow;
 		Ogre::SceneManager* sceneManager;
 		Ogre::Camera* camera;
 		Ogre::SceneNode* cameraNode;
-		Ogre::Viewport* viewport;
 
 		bool render;
 		bool moveObjects;

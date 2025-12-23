@@ -1,110 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Game">
-      <UniqueIdentifier>{7976158d-68ed-4302-ae69-44768abf975a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collision">
-      <UniqueIdentifier>{ef0a4467-6a21-4d5d-a5d4-bccdbc6a55e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collision\Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Collision\Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Game\Source Files">
-      <UniqueIdentifier>{6444d969-7a9d-4e5f-8557-45d9e02e21a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Header Files">
-      <UniqueIdentifier>{e0127a3b-5eb4-40a1-9913-7d65b2a37574}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Collision\Solver.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\App\Map.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Collision\Grid.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\App\Object.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Collision\NoTree.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\App\Root.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Collision\Octree.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Grid.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Collision\Plane.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\NoTree.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Main.cpp">
-      <Filter>Game\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Octree.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\StdAfx.cpp">
-      <Filter>Game\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Plane.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Collision\Tree.cpp">
-      <Filter>Collision\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Solver.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\App\Map.cpp">
-      <Filter>Game\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Sphere.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\App\Root.cpp">
-      <Filter>Game\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Collision\Tree.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\App\Object.cpp">
-      <Filter>Game\Source Files</Filter>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\simple-collision-detection\src\StdAfx.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Collision\AABB.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\App\Map.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Grid.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\App\Object.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Math.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\App\Root.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\NoTree.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\AABB.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Octree.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Grid.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Plane.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Math.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Shape.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\NoTree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Solver.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\OBB.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Sphere.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Octree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Tree.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Plane.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\Vector3.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Shape.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\StdAfx.h">
-      <Filter>Game\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Solver.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Collision\OBB.h">
-      <Filter>Collision\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Sphere.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\App\Map.h">
-      <Filter>Game\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Tree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\App\Root.h">
-      <Filter>Game\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\Collision\Vector3.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\App\Object.h">
-      <Filter>Game\Header Files</Filter>
+    <ClInclude Include="D:\Projects\simple-collision-detection\src\StdAfx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Projects\simple-collision-detection\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{23B6B492-962A-354E-81D1-5D735CB7148D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D984522C-FB36-3C55-B882-51158192A354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

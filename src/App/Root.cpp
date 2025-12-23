@@ -20,9 +20,8 @@ namespace App
 
 	void Root::run()
 	{
-		std::unique_ptr<Gecko::App> app = std::make_unique<Gecko::App>();
-
-		root = app->getContext()->getRoot();
+		app = std::make_unique<Gecko::App>();
+		Ogre::Root* root = app->getContext()->getRoot();
 
 		if (root->restoreConfig() || root->showConfigDialog(OgreBites::getNativeConfigDialog()))
 		{
@@ -268,18 +267,21 @@ namespace App
 
 	bool Root::frameStarted(const Ogre::FrameEvent& evt)
 	{
-		/*
-		std::stringstream ss;
-		ss << renderWindow->getStatistics().lastFPS << " FPS";
+		std::cout << app->getContext()->getRenderWindow()->getStatistics().avgFPS << " FPS" << std::endl;
 
+		/*
+		TODO: Show FPS on window title.
+
+		std::stringstream ss;
+		ss << renderWindow->getStatistics().avgFPS << " FPS";
 		size_t windowHnd = 0;
 		renderWindow->getCustomAttribute("WINDOW", &windowHnd);
-
 		SetWindowTextA((HWND)windowHnd, ss.str().c_str());
-
+		*/
 
 		keyboard->capture();
 		mouse->capture();
+		
 
 		if (keyboard->isKeyDown(OIS::KC_ESCAPE))
 		{
@@ -324,29 +326,24 @@ namespace App
 		{
 			(*i)->update(evt.timeSinceLastFrame);
 		}
-		*/
 
 		return render;
 	}
 
 	bool Root::mouseMoved(const OgreBites::MouseMotionEvent& evt)
 	{
-		/*
 		cameraNode->yaw(Ogre::Degree(-arg.state.X.rel * 0.1f));
 		cameraNode->pitch(Ogre::Degree(-arg.state.Y.rel * 0.1f));
-		*/
 
 		return true;
 	}
 
 	bool Root::keyPressed(const OgreBites::KeyboardEvent& evt)
 	{
-		/*
 		if (arg.key == OIS::KC_M)
 		{
 			moveObjects = !moveObjects;
 		}
-		*/
 
 		return true;
 	}

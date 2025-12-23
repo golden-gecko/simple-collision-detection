@@ -1,0 +1,68 @@
+material Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 1.0 0.2 0.2
+			polygon_mode wireframe
+			cull_hardware none
+			cull_software none
+		}
+	}
+}
+
+material Tree : Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8
+		}
+	}
+}
+
+material Collision : Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 1.0 1.0 0.2
+		}
+	}
+}
+
+material Track : Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.2
+		}
+	}
+}
+
+material Map : Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8
+		}
+	}
+}
+
+material Manual : Wireframe
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 1.0
+		}
+	}
+}
