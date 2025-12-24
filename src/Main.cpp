@@ -4,7 +4,14 @@
 
 int main()
 {
-	std::make_unique<Root>()->run();
+    std::vector<std::string> meshes = 
+    {
+        "ogrehead.mesh",
+        "robot.mesh",
+        "tudorhouse.mesh"
+    };
 
-	return 0;
+    std::make_unique<Root>()->run(meshes, 40);
+
+    return 0;
 }

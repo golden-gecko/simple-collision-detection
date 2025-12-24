@@ -1,25 +1,24 @@
 #pragma once
 
+#include "PCH.hpp"
+
 #include "Collision/Shape.hpp"
 
 namespace Collision
 {
-	class Sphere : public Shape
-	{
-	public:
-		Sphere(const Vector3& position, float radius) : Shape(Shape::ST_SPHERE, position), radius(radius)
-		{
-		}
+    class Sphere : public Shape
+    {
+    public:
+        Sphere(const Ogre::Vector3f& position, float radius) : Shape(Shape::ST_SPHERE, position), radius(radius)
+        {
+        }
 
-		float getRadius() const
-		{
-			return radius;
-		}
+        float getRadius() const
+        {
+            return radius;
+        }
 
-		void update()
-		{
-		}
-	protected:
-		float radius;
-	};
+    protected:
+        float radius = 0.0f;
+    };
 }

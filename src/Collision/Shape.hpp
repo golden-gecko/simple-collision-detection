@@ -1,45 +1,47 @@
 #pragma once
 
-#include "Collision/Vector3.hpp"
+#include "PCH.hpp"
 
 namespace Collision
 {
-	class Shape
-	{
-	public:
-		enum Type
-		{
-			ST_SPHERE = 0x01,
-			ST_AABB = 0x02,
-			ST_PLANE = 0x04,
-			ST_OBB = 0x08
-		};
-	public:
-		Shape(Type type, const Vector3& position) : type(type), position(position)
-		{
-		}
+    class Shape
+    {
+    public:
+        enum Type
+        {
+            ST_SPHERE = 0x01,
+            ST_AABB = 0x02,
+            ST_PLANE = 0x04,
+            ST_OBB = 0x08
+        };
 
-		virtual void setPosition(const Vector3& position)
-		{
-			this->position = position;
-		}
+    public:
+        Shape(Type type, const Ogre::Vector3f& position) : type(type), position(position)
+        {
+        }
 
-		const Vector3& getPosition() const
-		{
-			return position;
-		}
+        virtual void setPosition(const Ogre::Vector3f& position)
+        {
+            this->position = position;
+        }
 
-		Type getType() const
-		{
-			return type;
-		}
+        const Ogre::Vector3f& getPosition() const
+        {
+            return position;
+        }
 
-		virtual void translate(const Vector3& vector)
-		{
-			this->position += vector;
-		}
-	protected:
-		Type type;
-		Vector3 position;
-	};
+        Type getType() const
+        {
+            return type;
+        }
+
+        void translate(const Ogre::Vector3f& vector)
+        {
+            this->position += vector;
+        }
+
+    protected:
+        Type type;
+        Ogre::Vector3f position;
+    };
 }

@@ -4,55 +4,53 @@
 
 namespace Collision
 {
-	void NoTree::build()
-	{
-		std::cout << "NoTree::build()" << std::endl;
+    void NoTree::build()
+    {
+        // Klasa NoTree wykonuje testy ka¿ej pary obiektów.
+        // S³u¿y tylko do testów i (w odró¿nieniu od np. Octree)
+        // nie wymaga dodatkowej organizacji obiektów.
+    }
 
-		// Klasa NoTree wykonuje testy ka¿ej pary obiektów.
-		// S³u¿y tylko do testów i (w odró¿nieniu od np. Octree)
-		// nie wymaga dodatkowej organizacji obiektów.
-	}
+    bool NoTree::collide(Shape* shape) const
+    {
+        for (std::vector<Shape*>::const_iterator i = shapes.begin(); i != shapes.end(); ++i)
+        {
+            if (collideShapes(shape, *i))
+            {
+                return true;
+            }
 
-	bool NoTree::collide(Shape* shape) const
-	{
-		for (std::vector<Shape*>::const_iterator i = shapes.begin(); i != shapes.end(); ++i)
-		{
-			if (collideShapes(shape, *i))
-			{
-				return true;
-			}
+            {
+                OBB* s1 = dynamic_cast<OBB*>(shape);
+                OBB* s2 = dynamic_cast<OBB*>(*i);
 
-			{
-				OBB* s1 = dynamic_cast<OBB*>(shape);
-				OBB* s2 = dynamic_cast<OBB*>(*i);
+                if (s1 && s2 && s1 != s2 && solver->collide(*s1, *s2))
+                {
+                    return true;
+                }
+            }
 
-				if (s1 && s2 && s1 != s2 && solver->collide(*s1, *s2))
-				{
-					return true;
-				}
-			}
+            {
+                OBB* s1 = dynamic_cast<OBB*>(shape);
+                Plane* s2 = dynamic_cast<Plane*>(*i);
 
-			{
-				OBB* s1 = dynamic_cast<OBB*>(shape);
-				Plane* s2 = dynamic_cast<Plane*>(*i);
+                if (s1 && s2 && solver->collide(*s1, *s2))
+                {
+                    return true;
+                }
+            }
 
-				if (s1 && s2 && solver->collide(*s1, *s2))
-				{
-					return true;
-				}
-			}
+            {
+                OBB* s1 = dynamic_cast<OBB*>(shape);
+                Sphere* s2 = dynamic_cast<Sphere*>(*i);
 
-			{
-				OBB* s1 = dynamic_cast<OBB*>(shape);
-				Sphere* s2 = dynamic_cast<Sphere*>(*i);
+                if (s1 && s2 && solver->collide(*s1, *s2))
+                {
+                    return true;
+                }
+            }
+        }
 
-				if (s1 && s2 && solver->collide(*s1, *s2))
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

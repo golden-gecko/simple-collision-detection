@@ -7,147 +7,131 @@
 #include "Object.hpp"
 #include "Root.hpp"
 
-Object::Object(const std::string& name, const std::string& mesh, Map* map)
-	: name(name), mesh(mesh), target(Ogre::Vector3::ZERO), map(map)
+Object::Object(Map* map, const std::string& name, const std::string& mesh, Collision::Tree* tree) : Gecko::GameObject(map, name, mesh), map(map), tree(tree)
 {
-	entity = Root::getSingleton().createEntity(name, mesh);
-	entity->setUserAny(Ogre::Any(this));
+    //*
+    entity->getUserObjectBindings().setUserAny(Ogre::Any(this));
 
-	sceneNode = Root::getSingleton().createSceneNode();
-	sceneNode->attachObject(entity);
-	sceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-	sceneNode->setPosition(
-		Ogre::Math::RangeRandom(100.0f, map->getSize().x - 100.0f), 0.0f,
-		Ogre::Math::RangeRandom(100.0f, map->getSize().z - 100.0f));
+    sceneNode->setFixedYawAxis(true, Ogre::Vector3f::UNIT_Y);
+    sceneNode->setPosition(Ogre::Math::RangeRandom(100.0f, map->getSize().x - 100.0f), 0.0f, Ogre::Math::RangeRandom(100.0f, map->getSize().z - 100.0f));
+    //*/
 
-	//*
-	shape = new Collision::AABB(sceneNode->getPosition(),
-		entity->getMesh()->getBoundingSphereRadius() * 0.5f * Collision::Vector3::UNIT_SCALE);
+    //*
+    shape = new Collision::AABB(sceneNode->getPosition(), entity->getMesh()->getBoundingSphereRadius() * 0.5f * Ogre::Vector3f::UNIT_SCALE);
 
-	shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
-	shapeEntity->setUserAny(Ogre::Any(this));
-	shapeEntity->setMaterialName("Wireframe");
+    shapeEntity = sceneManager->createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
+    shapeEntity->getUserObjectBindings().setUserAny(Ogre::Any(this));
+    shapeEntity->setMaterialName("Wireframe");
 
-	shapeSceneNode = sceneNode->createChildSceneNode();
-	shapeSceneNode->attachObject(shapeEntity);
-	shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-	shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
-	shapeSceneNode->translate(entity->getBoundingBox().getCenter());
-	//*/
+    shapeSceneNode = sceneNode->createChildSceneNode();
+    shapeSceneNode->attachObject(shapeEntity);
+    shapeSceneNode->setScale(Ogre::Vector3f::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
+    shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3f::UNIT_Y);
+    shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+    //*/
 
-	/*
-	shape = new Collision::OBB(sceneNode->getPosition(),
-		entity->getMesh()->getBounds().getSize() * 0.5f * Collision::Vector3::UNIT_SCALE);
+    /*
+    shape = new Collision::OBB(sceneNode->getPosition(), entity->getMesh()->getBounds().getSize() * 0.5f * Ogre::Vector3f::UNIT_SCALE);
 
-	shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
-	shapeEntity->setUserAny(Ogre::Any(this));
-	shapeEntity->setMaterialName("Wireframe");
+    shapeEntity = sceneManager->createEntity(name + "_Shape", Ogre::SceneManager::PT_CUBE);
+    shapeEntity->getUserObjectBindings().setUserAny(Ogre::Any(this));
+    shapeEntity->setMaterialName("Wireframe");
 
-	shapeSceneNode = sceneNode->createChildSceneNode();
-	shapeSceneNode->attachObject(shapeEntity);
-	shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-	shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
-	shapeSceneNode->translate(entity->getBoundingBox().getCenter());
-	//*/
+    shapeSceneNode = sceneNode->createChildSceneNode();
+    shapeSceneNode->attachObject(shapeEntity);
+    shapeSceneNode->setScale(Ogre::Vector3f::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getSize() * 2.0f);
+    shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3f::UNIT_Y);
+    shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+    //*/
 
-	/*
-	shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius());
+    /*
+    shape = new Collision::Sphere(sceneNode->getPosition(), entity->getBoundingRadius());
 
-	shapeEntity = Root::getSingleton().createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
-	shapeEntity->setUserAny(Ogre::Any(this));
-	shapeEntity->setMaterialName("Wireframe");
+    shapeEntity = sceneManager->createEntity(name + "_Shape", Ogre::SceneManager::PT_SPHERE);
+    shapeEntity->getUserObjectBindings().setUserAny(Ogre::Any(this));
+    shapeEntity->setMaterialName("Wireframe");
 
-	shapeSceneNode = sceneNode->createChildSceneNode();
-	shapeSceneNode->attachObject(shapeEntity);
-	shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3::UNIT_Y);
-	shapeSceneNode->setScale(Ogre::Vector3::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getRadius() * 2.0f);
-	shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+    shapeSceneNode = sceneNode->createChildSceneNode();
+    shapeSceneNode->attachObject(shapeEntity);
+    shapeSceneNode->setScale(Ogre::Vector3f::UNIT_SCALE / shapeEntity->getBoundingBox().getSize() * shape->getRadius() * 2.0f);
+    shapeSceneNode->setFixedYawAxis(true, Ogre::Vector3f::UNIT_Y);
+    shapeSceneNode->translate(entity->getBoundingBox().getCenter());
+    //*/
 
-	path = Root::getSingleton().getSceneManager()->createManualObject(name + "_m");
-	Root::getSingleton().getSceneManager()->getRootSceneNode()->attachObject(path);
-	//*/
+    // Reprezentacja prêdkoœci oraz trasy.
+    path = sceneManager->createManualObject(name + "_path");
+    path->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
 
-	Root::getSingleton().getTree()->add(shape);
+    path->position(Ogre::Vector3f::ZERO);
+    path->position(Ogre::Vector3f::UNIT_X);
 
-	setRandomTarget();
-	setRandomSpeed();
+    path->index(0);
+    path->index(1);
 
-	// Reprezentacja prêdkoœci oraz trasy.
-	path = Root::getSingleton().getSceneManager()->createManualObject(name + "_path");
-	path->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
-	path->position(Ogre::Vector3::ZERO);
-	path->position(Ogre::Vector3::UNIT_X);
-	path->normal(Ogre::Vector3::UNIT_X);
-	path->normal(Ogre::Vector3::UNIT_X);
-	path->textureCoord(0);
-	path->textureCoord(1);
-	path->index(0);
-	path->index(1);
-	path->end();
+    path->end();
 
-	pathSceneNode = sceneNode->createChildSceneNode();
-	pathSceneNode->attachObject(path);
+    pathSceneNode = sceneNode->createChildSceneNode();
+    pathSceneNode->attachObject(path);
+
+    setRandomTarget();
+    setRandomSpeed();
 }
 
 void Object::update(float time)
 {
-	const Ogre::Vector3& position = sceneNode->getPosition();
+    const Ogre::Vector3f& position = sceneNode->getPosition();
 
-	if (position.distance(target) < 1.0f)
-	{
-		setRandomTarget();
-		setRandomSpeed();
-	}
-	else
-	{
-		if (Root::getSingleton().getMoveObjects())
-		{
-			Ogre::Vector3 velocity = (target - position).normalisedCopy() * speed * time;
+    if (position.distance(target) < 1.0f)
+    {
+        setRandomTarget();
+        setRandomSpeed();
+    }
+    else
+    {
+        Ogre::Vector3f velocity = (target - position).normalisedCopy() * speed * time;
 
-			// Przesuñ bry³ê. Je¿eli po przesuniêciu bry³a koliduje z innym obiektem,
-			// to cofnij przesuniêcie. W przeciwnym wypadku, przesuñ ca³y obiekt.
-			shape->translate(velocity);
+        // Przesuñ bry³ê. Je¿eli po przesuniêciu bry³a koliduje z innym obiektem,
+        // to cofnij przesuniêcie. W przeciwnym wypadku, przesuñ ca³y obiekt.
+        shape->translate(velocity);
 
-			if (Root::getSingleton().getTree()->collide(shape))
-			{
-				shapeEntity->setMaterialName("Collision");
+        if (tree->collide(shape))
+        {
+            shapeEntity->setMaterialName("Collision");
 
-				shape->translate(-velocity);
+            shape->translate(-velocity);
 
-				target = position - velocity * 200.0f;
-			}
-			else
-			{
-				shapeEntity->setMaterialName("Wireframe");
+            target = position - velocity * 200.0f;
+        }
+        else
+        {
+            shapeEntity->setMaterialName("Wireframe");
 
-				sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3::UNIT_X);
-				sceneNode->translate(velocity);
+            sceneNode->lookAt(target, Ogre::Node::TS_PARENT, Ogre::Vector3f::UNIT_X);
+            sceneNode->translate(velocity);
 
-				if (dynamic_cast<Collision::AABB*>(shape)) {
-					shapeSceneNode->setDirection(Ogre::Vector3::UNIT_X, Ogre::Node::TS_WORLD);
-				}
+            if (dynamic_cast<Collision::AABB*>(shape))
+            {
+                shapeSceneNode->setDirection(Ogre::Vector3f::UNIT_X, Ogre::Node::TS_WORLD);
+            }
 
-				pathSceneNode->setScale(Ogre::Vector3::UNIT_SCALE * (target - position).length());
-			}
-		}
-	}
+            pathSceneNode->setScale(Ogre::Vector3f::UNIT_SCALE * (target - position).length());
+        }
+    }
 }
 
 Object::~Object()
 {
-	delete shape;
-	Root::getSingleton().destroyEntity(entity);
-	Root::getSingleton().destroySceneNode(sceneNode);
+    delete shape;
 }
 
 void Object::setRandomTarget()
 {
-	target.x = Ogre::Math::RangeRandom(-1000.0f, map->getSize().x + 1000.0f);
-	target.y = 0.0f;
-	target.z = Ogre::Math::RangeRandom(-1000.0f, map->getSize().z + 1000.0f);
+    target.x = Ogre::Math::RangeRandom(-1000.0f, map->getSize().x + 1000.0f);
+    target.y = 0.0f;
+    target.z = Ogre::Math::RangeRandom(-1000.0f, map->getSize().z + 1000.0f);
 }
 
 void Object::setRandomSpeed()
 {
-	speed = Ogre::Math::RangeRandom(100.0f, 100.0f);
+    speed = Ogre::Math::RangeRandom(100.0f, 100.0f);
 }

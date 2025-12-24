@@ -1,61 +1,60 @@
 #pragma once
 
+#include "PCH.hpp"
+
 #include "Collision/Shape.hpp"
 
 namespace Collision
 {
-	class OBB : public Shape
-	{
-	public:
-		Vector3 u[3];
-		float e[3];
+    class OBB : public Shape
+    {
+    public:
+        Ogre::Vector3f u[3];
+        float e[3];
 
-		OBB() : Shape(Shape::ST_OBB, Vector3::ZERO)
-		{
-			setSize(Vector3::ZERO);
-		}
+        OBB() : Shape(Shape::ST_OBB, Ogre::Vector3f::ZERO)
+        {
+            setSize(Ogre::Vector3f::ZERO);
+        }
 
-		OBB(const Vector3& position, const Vector3& size) : Shape(Shape::ST_OBB, position)
-		{
-			setSize(size);
-		}
+        OBB(const Ogre::Vector3f& position, const Ogre::Vector3f& size) : Shape(Shape::ST_OBB, position)
+        {
+            setSize(size);
+        }
 
-		const Vector3* getAxes() const
-		{
-			return axes;
-		}
-		
-		const Vector3& getSize() const
-		{
-			return size;
-		}
+        const Ogre::Vector3f* getAxes() const
+        {
+            return axes;
+        }
+        
+        const Ogre::Vector3f& getSize() const
+        {
+            return size;
+        }
 
-		virtual void setSize(const Vector3& size)
-		{
-			this->size = size;
+        void setSize(const Ogre::Vector3f& size)
+        {
+            this->size = size;
 
-			axes[0] = Vector3(size.x, 0.0f, 0.0f);
-			axes[1] = Vector3(0.0f, size.y, 0.0f);
-			axes[2] = Vector3(0.0f, 0.0f, size.z);
+            axes[0] = Ogre::Vector3f(size.x, 0.0f, 0.0f);
+            axes[1] = Ogre::Vector3f(0.0f, size.y, 0.0f);
+            axes[2] = Ogre::Vector3f(0.0f, 0.0f, size.z);
 
-			axes[0].normalise();
-			axes[1].normalise();
-			axes[2].normalise();
+            axes[0].normalise();
+            axes[1].normalise();
+            axes[2].normalise();
 
-			u[0] = axes[0];
-			u[1] = axes[1];
-			u[2] = axes[2];
+            u[0] = axes[0];
+            u[1] = axes[1];
+            u[2] = axes[2];
 
-			e[0] = size.x;
-			e[1] = size.y;
-			e[2] = size.z;
-		}
+            e[0] = size.x;
+            e[1] = size.y;
+            e[2] = size.z;
+        }
 
-		virtual void update()
-		{
-		}
-	protected:
-		Vector3 axes[3];
-		Vector3 size;
-	};
+    protected:
+        Ogre::Vector3f axes[3] = { Ogre::Vector3f::ZERO, Ogre::Vector3f::ZERO, Ogre::Vector3f::ZERO };
+        Ogre::Vector3f size = Ogre::Vector3f::ZERO;
+    };
 }

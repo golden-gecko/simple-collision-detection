@@ -1,2 +1,6 @@
 build
-
+*.dll
+*.exe
+*.lib
+*.mesh
+*.pdb

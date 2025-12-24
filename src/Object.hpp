@@ -2,46 +2,45 @@
 
 #include "PCH.hpp"
 
+#include "Gecko/GameObject.hpp"
+
 #include "Collision/AABB.hpp"
 #include "Collision/Sphere.hpp"
+#include "Collision/Tree.hpp"
 
 #include "Map.hpp"
 
-class Object
+class Object : public Gecko::GameObject
 {
 public:
-	Object(const std::string& name, const std::string& mesh, Map* map);
+    Object(Map* map, const std::string& name, const std::string& mesh, Collision::Tree* tree);
+    
+    ~Object() override;
 
-	virtual void update(float time);
+    void update(float time) override;
 
-	virtual ~Object();
+    Collision::Shape* getShape() const
+    {
+        return shape;
+    }
 
-	Collision::Shape* getShape() const
-	{
-		return shape;
-	}
 protected:
-	std::string name;
-	std::string mesh;
+    Collision::AABB* shape = nullptr;
+    // Collision::OBB* shape = nullptr;
+    // Collision::Sphere* shape = nullptr;
 
-	Ogre::Entity* entity;
-	Ogre::SceneNode* sceneNode;
+    Ogre::Entity* shapeEntity = nullptr;
+    Ogre::SceneNode* shapeSceneNode = nullptr;
 
-	Collision::AABB* shape;
-//		Collision::OBB* shape;
-//		Collision::Sphere* shape;
+    Ogre::ManualObject* path = nullptr;
+    Ogre::SceneNode* pathSceneNode = nullptr;
 
-	Ogre::Entity* shapeEntity;
-	Ogre::SceneNode* shapeSceneNode;
+    Ogre::Vector3f target = Ogre::Vector3f::ZERO;
+    float speed;
 
-	Ogre::ManualObject* path;
-	Ogre::SceneNode* pathSceneNode;
+    Map* map = nullptr;
+    Collision::Tree* tree = nullptr;
 
-	Ogre::Vector3 target;
-	float speed;
-
-	Map* map;
-
-	void setRandomTarget();
-	void setRandomSpeed();
+    void setRandomTarget();
+    void setRandomSpeed();
 };

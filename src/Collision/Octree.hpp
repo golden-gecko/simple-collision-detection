@@ -4,54 +4,55 @@
 
 namespace Collision
 {
-	class Octree : public Tree
-	{
-	public:
-		struct Cell
-		{
-			AABB aabb;
-			std::vector<Shape*> shapes;
-			int cellNumber;
-			Cell* cells[8];
-			int depth;
+    class Octree : public Tree
+    {
+    public:
+        struct Cell
+        {
+            AABB aabb;
+            std::vector<Shape*> shapes;
+            int cellNumber;
+            Cell* cells[8];
+            int depth;
 
-			Cell(int depth) : cellNumber(0), depth(depth)
-			{
-				for (int i = 0; i < 8; ++i)
-				{
-					cells[i] = nullptr;
-				}
-			}
+            Cell(int depth) : cellNumber(0), depth(depth)
+            {
+                for (int i = 0; i < 8; ++i)
+                {
+                    cells[i] = nullptr;
+                }
+            }
 
-			void attachShape(Shape* shape)
-			{
-				shapes.push_back(shape);
-			}
+            void attachShape(Shape* shape)
+            {
+                shapes.push_back(shape);
+            }
 
-			void detachShape(Shape* shape)
-			{
-			}
-		};
+            void detachShape(Shape* shape)
+            {
+            }
+        };
 
-		Octree();
+        Octree();
 
-		virtual ~Octree();
+        ~Octree() override;
 
-		virtual void build();
+        void build() override;
 
-		virtual bool collide(Shape* shape) const;
+        bool collide(Shape* shape) const override;
 
-		void setMaxDepth(int maxDepth)
-		{
-			this->maxDepth = maxDepth;
-		}
+        void setMaxDepth(int maxDepth)
+        {
+            this->maxDepth = maxDepth;
+        }
 
-		Cell* getRoot() const
-		{
-			return root;
-		}
-	protected:
-		int maxDepth;
-		Cell* root = nullptr;
-	};
+        Cell* getRoot() const
+        {
+            return root;
+        }
+
+    protected:
+        int maxDepth = 0;
+        Cell * root = nullptr;
+    };
 }

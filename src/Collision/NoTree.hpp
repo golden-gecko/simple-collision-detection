@@ -4,11 +4,11 @@
 
 namespace Collision
 {
-	class NoTree : public Tree
-	{
-	public:
-		virtual void build();
+    class NoTree : public Tree
+    {
+    public:
+        void build() override;
 
-		virtual bool collide(Shape* shape) const;
-	};
+        bool collide(Shape* shape) const override;
+    };
 }
