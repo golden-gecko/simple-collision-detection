@@ -4,22 +4,22 @@ project(simple-collision-detection)
 
 find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
 
-file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/src/*.hpp)
-file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/src/*.hpp)
+file(GLOB_RECURSE SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${CMAKE_SOURCE_DIR}/bin/media/materials/scripts/My.material)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/../gecko-engine/projects/gecko/src)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/lib/OIS/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${OIS_ROOT}/include/ois)
+target_include_directories(${PROJECT_NAME} PUBLIC ${GECKO_ROOT}/include)
 
 target_link_libraries(${PROJECT_NAME} OgreBites)
-target_link_libraries(${PROJECT_NAME} debug ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS_d.lib optimized ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS.lib)
-target_link_libraries(${PROJECT_NAME} debug ${CMAKE_SOURCE_DIR}/../gecko-engine/build/projects/gecko/Debug/Gecko.lib optimized ${CMAKE_SOURCE_DIR}/../gecko-engine/build/projects/gecko/Debug/Gecko.lib)
+target_link_libraries(${PROJECT_NAME} debug ${OIS_ROOT}/lib/OIS_d.lib optimized ${OIS_ROOT}/lib/OIS.lib)
+target_link_libraries(${PROJECT_NAME} debug ${GECKO_ROOT}/lib/Gecko_d.lib optimized ${GECKO_ROOT}/lib/Gecko.lib)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_EXTENSIONS NO
+    CXX_EXTENSIONS OFF
     CXX_STANDARD 23
-    CXX_STANDARD_REQUIRED YES
+    CXX_STANDARD_REQUIRED ON
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/system
 )
