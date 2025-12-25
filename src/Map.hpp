@@ -4,9 +4,6 @@
 
 #include "Gecko/Scene.hpp"
 
-#include "Collision/Grid.hpp"
-#include "Collision/Octree.hpp"
-
 class Map : public Gecko::Scene
 {
 public:
@@ -18,9 +15,6 @@ public:
     {
         return size;
     }
-
-    void createGrid(Collision::Grid* grid);
-    void createOctree(Collision::Octree* octree);
 
 protected:
     std::string name;

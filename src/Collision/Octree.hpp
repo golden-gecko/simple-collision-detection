@@ -2,6 +2,8 @@
 
 #include "Collision/Tree.hpp"
 
+#include "Map.hpp"
+
 namespace Collision
 {
     class Octree : public Tree
@@ -33,13 +35,13 @@ namespace Collision
             }
         };
 
-        Octree();
-
         ~Octree() override;
 
         void build() override;
 
         bool collide(Shape* shape) const override;
+
+        void debug(Map* map) override;
 
         void setMaxDepth(int maxDepth)
         {
@@ -53,6 +55,9 @@ namespace Collision
 
     protected:
         int maxDepth = 0;
-        Cell * root = nullptr;
+        Cell* root = nullptr;
+
+        Ogre::ManualObject* manual = nullptr;
+        Ogre::SceneNode* sceneNode = nullptr;
     };
 }

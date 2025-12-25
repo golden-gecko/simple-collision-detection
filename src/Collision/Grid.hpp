@@ -26,11 +26,11 @@ namespace Collision
             }
         };
 
-        virtual ~Grid();
+        void build() override;
 
-        virtual void build();
+        bool collide(Shape* shape) const override;
 
-        virtual bool collide(Shape* shape) const;
+        void debug(Map* map) override;
 
         void setCellSize(const Ogre::Vector3f& size)
         {
@@ -79,5 +79,8 @@ namespace Collision
         int numberCells[3] = { 0, 0, 0 };
         Cell* cells = nullptr;
         std::map<Shape*, Cell*> shapesToCells;
+
+        Ogre::ManualObject* manual = nullptr;
+        Ogre::SceneNode* sceneNode = nullptr;
     };
 }

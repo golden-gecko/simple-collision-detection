@@ -2,9 +2,10 @@
 
 #include "PCH.hpp"
 
-#include "Collision/AABB.hpp"
 #include "Collision/Solver.hpp"
-#include "Collision/Sphere.hpp"
+
+class Map;
+class Shape;
 
 namespace Collision
 {
@@ -20,24 +21,30 @@ namespace Collision
             shapes.push_back(shape);
         }
 
-        void setSolver(Solver* solver)
+        virtual void build()
         {
-            this->solver = solver;
         }
-
-        void setSize(const Ogre::Vector3f& size)
-        {
-            this->size = size;
-        }
-
-        virtual void build() = 0;
 
         virtual bool collide(Shape* shape) const = 0;
 
         virtual bool collideShapes(Shape* _s1, Shape* _s2) const;
 
+        virtual void debug(Map* map)
+        {
+        }
+
+        void setSolver(std::shared_ptr<Solver> _solver)
+        {
+            solver = _solver;
+        }
+
+        void setSize(const Ogre::Vector3f& _size)
+        {
+            size = _size;
+        }
+
     protected:
-        Solver* solver = nullptr;
+        std::shared_ptr<Solver> solver;
 
         std::vector<Shape*> shapes;
 

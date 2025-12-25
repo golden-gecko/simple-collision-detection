@@ -5,15 +5,20 @@
 #include "Gecko/GameObject.hpp"
 
 #include "Collision/AABB.hpp"
+#include "Collision/OBB.hpp"
 #include "Collision/Sphere.hpp"
-#include "Collision/Tree.hpp"
 
-#include "Map.hpp"
+namespace Collision
+{
+    class Tree;
+}
+
+class Map;
 
 class Object : public Gecko::GameObject
 {
 public:
-    Object(Map* map, const std::string& name, const std::string& mesh, Collision::Tree* tree);
+    Object(Map* map, const std::string& name, const std::string& mesh, std::shared_ptr<Collision::Tree> tree);
     
     ~Object() override;
 
@@ -39,7 +44,7 @@ protected:
     float speed;
 
     Map* map = nullptr;
-    Collision::Tree* tree = nullptr;
+    std::shared_ptr<Collision::Tree> tree;
 
     void setRandomTarget();
     void setRandomSpeed();

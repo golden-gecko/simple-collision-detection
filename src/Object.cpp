@@ -5,9 +5,10 @@
 #include "Collision/Sphere.hpp"
 
 #include "Object.hpp"
+#include "Map.hpp"
 #include "Root.hpp"
 
-Object::Object(Map* map, const std::string& name, const std::string& mesh, Collision::Tree* tree) : Gecko::GameObject(map, name, mesh), map(map), tree(tree)
+Object::Object(Map* map, const std::string& name, const std::string& mesh, std::shared_ptr<Collision::Tree> tree) : Gecko::GameObject(map, name, mesh), map(map), tree(tree)
 {
     //*
     entity->getUserObjectBindings().setUserAny(Ogre::Any(this));
@@ -60,7 +61,7 @@ Object::Object(Map* map, const std::string& name, const std::string& mesh, Colli
 
     // Reprezentacja prêdkoœci oraz trasy.
     path = sceneManager->createManualObject(name + "_path");
-    path->begin("Track", Ogre::RenderOperation::OT_LINE_LIST);
+    path->begin("Path", Ogre::RenderOperation::OT_LINE_LIST);
 
     path->position(Ogre::Vector3f::ZERO);
     path->position(Ogre::Vector3f::UNIT_X);

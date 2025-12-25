@@ -3,14 +3,11 @@
 #include "Collision/AABB.hpp"
 #include "Collision/Grid.hpp"
 
+#include "Map.hpp"
 #include "Root.hpp"
 
 namespace Collision
 {
-    Grid::~Grid()
-    {
-    }
-
     void Grid::build()
     {
         // Dzielimy rozmiar siatki przez rozmiar komórki (rozmiarem komórki mo¿e byæ np. rozmiar najwiêkszego obiektu na mapie).
@@ -147,5 +144,79 @@ namespace Collision
         }
 
         return false;
+    }
+
+    void Grid::debug(Map* map)
+    {
+        if (manual == nullptr)
+        {
+            manual = map->getSceneManager()->createManualObject();
+        }
+
+        manual->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
+
+        for (int z = 0; z < numberCells[2]; ++z)
+        {
+            for (int y = 0; y < numberCells[1]; ++y)
+            {
+                for (int x = 0; x < numberCells[0]; ++x)
+                {
+                    int offset = (z * numberCells[1] * numberCells[0]) + (y * numberCells[0]) + x;
+
+                    const Ogre::Vector3f& position = cells[offset].aabb.getPosition();
+                    const Ogre::Vector3f& size = cells[offset].aabb.getSize();
+
+                    Ogre::Vector3f min = position - size;
+                    Ogre::Vector3f max = position + size;
+
+                    manual->position(min.x, min.y, min.z);
+                    manual->position(max.x, min.y, min.z);
+                    manual->position(max.x, min.y, max.z);
+                    manual->position(min.x, min.y, max.z);
+
+                    manual->position(min.x, max.y, min.z);
+                    manual->position(max.x, max.y, min.z);
+                    manual->position(max.x, max.y, max.z);
+                    manual->position(min.x, max.y, max.z);
+
+                    offset *= 8;
+
+                    manual->index(offset + 0);
+                    manual->index(offset + 1);
+                    manual->index(offset + 1);
+                    manual->index(offset + 2);
+                    manual->index(offset + 2);
+                    manual->index(offset + 3);
+                    manual->index(offset + 3);
+                    manual->index(offset + 0);
+
+                    manual->index(offset + 4);
+                    manual->index(offset + 5);
+                    manual->index(offset + 5);
+                    manual->index(offset + 6);
+                    manual->index(offset + 6);
+                    manual->index(offset + 7);
+                    manual->index(offset + 7);
+                    manual->index(offset + 4);
+
+                    manual->index(offset + 0);
+                    manual->index(offset + 4);
+                    manual->index(offset + 1);
+                    manual->index(offset + 5);
+                    manual->index(offset + 2);
+                    manual->index(offset + 6);
+                    manual->index(offset + 3);
+                    manual->index(offset + 7);
+                }
+            }
+        }
+
+        manual->end();
+
+        if (sceneNode == nullptr)
+        {
+            sceneNode = map->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+            sceneNode->attachObject(manual);
+        }
     }
 }

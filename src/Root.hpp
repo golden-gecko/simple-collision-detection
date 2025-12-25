@@ -2,13 +2,15 @@
 
 #include "PCH.hpp"
 
-#include "Collision/Grid.hpp"
-#include "Collision/Octree.hpp"
-
-#include "Gecko/App.hpp"
-#include "Gecko/Input.hpp"
+#include "Collision/Tree.hpp"
 
 #include "Object.hpp"
+
+namespace Gecko
+{
+    class App;
+    class Input;
+}
 
 class Root : public Ogre::FrameListener
 {
@@ -17,9 +19,9 @@ public:
     bool frameStarted(const Ogre::FrameEvent& evt) override;
 
 public:
-    void run(const std::vector<std::string>& meshes, int numObjects);
+    void run(const Ogre::Vector3f& size, const std::vector<std::string>& meshes, int numObjects, std::shared_ptr<Collision::Tree> tree);
 
-    Collision::Tree* getTree() const
+    std::shared_ptr<Collision::Tree> getTree() const
     {
         return tree;
     }
@@ -27,10 +29,7 @@ public:
 protected:
     std::shared_ptr<Gecko::App> app;
     std::shared_ptr<Gecko::Input> input;
-
+    std::shared_ptr<Map> map;
+    std::shared_ptr<Collision::Tree> tree;
     std::vector<Object*> objects;
-
-    Collision::Tree* tree = nullptr;
-    Collision::Grid* grid = nullptr;
-    Collision::Octree* octree = nullptr;
 };

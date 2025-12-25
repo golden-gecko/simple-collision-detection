@@ -1,13 +1,9 @@
 #include "PCH.hpp"
 
-#include "Octree.hpp"
+#include "Collision/Octree.hpp"
 
 namespace Collision
 {
-    Octree::Octree() : maxDepth(8), root(nullptr)
-    {
-    }
-    
     Octree::~Octree()
     {
         if (root)
@@ -191,5 +187,88 @@ namespace Collision
         while (cells.size() > 0);
 
         return false;
+    }
+
+    void Octree::debug(Map* map)
+    {
+        if (manual == nullptr)
+        {
+            manual = map->getSceneManager()->createManualObject();
+        }
+
+        manual->begin("Map", Ogre::RenderOperation::OT_LINE_LIST);
+
+        std::list<Collision::Octree::Cell*> cells;
+        cells.push_back(root);
+
+        int offset = 0;
+
+        while (cells.size() > 0)
+        {
+            Collision::Octree::Cell* current = cells.front();
+
+            const Ogre::Vector3f& position = current->aabb.getPosition();
+            const Ogre::Vector3f& size = current->aabb.getSize();
+
+            Ogre::Vector3f min = position - size;
+            Ogre::Vector3f max = position + size;
+
+            manual->position(min.x, min.y, min.z);
+            manual->position(max.x, min.y, min.z);
+            manual->position(max.x, min.y, max.z);
+            manual->position(min.x, min.y, max.z);
+
+            manual->position(min.x, max.y, min.z);
+            manual->position(max.x, max.y, min.z);
+            manual->position(max.x, max.y, max.z);
+            manual->position(min.x, max.y, max.z);
+
+            offset += 8;
+
+            manual->index(offset + 0);
+            manual->index(offset + 1);
+            manual->index(offset + 1);
+            manual->index(offset + 2);
+            manual->index(offset + 2);
+            manual->index(offset + 3);
+            manual->index(offset + 3);
+            manual->index(offset + 0);
+
+            manual->index(offset + 4);
+            manual->index(offset + 5);
+            manual->index(offset + 5);
+            manual->index(offset + 6);
+            manual->index(offset + 6);
+            manual->index(offset + 7);
+            manual->index(offset + 7);
+            manual->index(offset + 4);
+
+            manual->index(offset + 0);
+            manual->index(offset + 4);
+            manual->index(offset + 1);
+            manual->index(offset + 5);
+            manual->index(offset + 2);
+            manual->index(offset + 6);
+            manual->index(offset + 3);
+            manual->index(offset + 7);
+
+            for (int i = 0; i < 8; ++i)
+            {
+                if (current->cells[i])
+                {
+                    cells.push_back(current->cells[i]);
+                }
+            }
+
+            cells.pop_front();
+        }
+
+        manual->end();
+
+        if (sceneNode == nullptr)
+        {
+            sceneNode = map->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+            sceneNode->attachObject(manual);
+        }
     }
 }

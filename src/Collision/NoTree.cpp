@@ -4,13 +4,6 @@
 
 namespace Collision
 {
-    void NoTree::build()
-    {
-        // Klasa NoTree wykonuje testy ka¿ej pary obiektów.
-        // S³u¿y tylko do testów i (w odró¿nieniu od np. Octree)
-        // nie wymaga dodatkowej organizacji obiektów.
-    }
-
     bool NoTree::collide(Shape* shape) const
     {
         for (std::vector<Shape*>::const_iterator i = shapes.begin(); i != shapes.end(); ++i)

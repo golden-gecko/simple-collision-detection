@@ -34,7 +34,7 @@ material Collision : Wireframe
 	}
 }
 
-material Track : Wireframe
+material Path : Wireframe
 {
 	technique
 	{
