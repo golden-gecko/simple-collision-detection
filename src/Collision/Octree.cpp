@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Collision/Octree.hpp"
 
 namespace Collision

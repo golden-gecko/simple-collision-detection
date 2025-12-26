@@ -1,7 +1,5 @@
 #pragma once
 
-#include "PCH.hpp"
-
 #include "Gecko/GameObject.hpp"
 
 #include "Collision/AABB.hpp"

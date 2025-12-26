@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PCH.hpp"
+#include <Ogre.h>
 
 namespace Collision
 {

@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Collision/NoTree.hpp"
 
 namespace Collision

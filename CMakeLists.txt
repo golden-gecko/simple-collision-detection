@@ -1,21 +1,14 @@
 cmake_minimum_required(VERSION 4.2)
 
-project(simple-collision-detection)
+project(simple-collision-detection LANGUAGES CXX)
 
-find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
-
+# Create target and add source files
 file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src)
-target_include_directories(${PROJECT_NAME} PUBLIC ${OIS_ROOT}/include/ois)
-target_include_directories(${PROJECT_NAME} PUBLIC ${GECKO_ROOT}/include)
-
-target_link_libraries(${PROJECT_NAME} OgreBites)
-target_link_libraries(${PROJECT_NAME} debug ${OIS_ROOT}/lib/OIS_d.lib optimized ${OIS_ROOT}/lib/OIS.lib)
-target_link_libraries(${PROJECT_NAME} debug ${GECKO_ROOT}/lib/Gecko_d.lib optimized ${GECKO_ROOT}/lib/Gecko.lib)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF
@@ -23,3 +16,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD_REQUIRED ON
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/system
 )
+
+# Find Gecko
+find_package(Gecko REQUIRED)
+target_link_libraries(${PROJECT_NAME} Gecko::Gecko)
+
+# Find JsonCpp
+find_package(jsoncpp REQUIRED)
+target_link_libraries(${PROJECT_NAME} jsoncpp_lib)
+
+# Find Ogre
+find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
+target_link_libraries(${PROJECT_NAME} OgreBites)

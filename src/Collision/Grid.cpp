@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Collision/AABB.hpp"
 #include "Collision/Grid.hpp"
 

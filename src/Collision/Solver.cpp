@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Collision/Solver.hpp"
 
 namespace Collision

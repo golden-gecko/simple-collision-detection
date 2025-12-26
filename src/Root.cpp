@@ -1,4 +1,4 @@
-#include "PCH.hpp"
+#include <iostream>
 
 #include "Gecko/App.hpp"
 #include "Gecko/Camera.hpp"

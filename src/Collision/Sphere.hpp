@@ -1,7 +1,5 @@
 #pragma once
 
-#include "PCH.hpp"
-
 #include "Collision/Shape.hpp"
 
 namespace Collision

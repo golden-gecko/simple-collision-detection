@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Map.hpp"
 #include "Root.hpp"
 

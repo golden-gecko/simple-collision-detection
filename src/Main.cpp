@@ -1,5 +1,3 @@
-#include "PCH.hpp"
-
 #include "Collision/Grid.hpp"
 #include "Collision/NoTree.hpp"
 #include "Collision/Octree.hpp"
