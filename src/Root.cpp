@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "Gecko/App.hpp"
-#include "Gecko/Camera.hpp"
-#include "Gecko/Input.hpp"
-#include "Gecko/Light.hpp"
-#include "Gecko/GameObject.hpp"
-#include "Gecko/Scene.hpp"
+#include <Gecko/App.hpp>
+#include <Gecko/Camera.hpp>
+#include <Gecko/Input.hpp>
+#include <Gecko/Light.hpp>
+#include <Gecko/GameObject.hpp>
+#include <Gecko/Scene.hpp>
 
 #include "Map.hpp"
 #include "Object.hpp"

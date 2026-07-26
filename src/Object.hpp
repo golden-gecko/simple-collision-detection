@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Gecko/GameObject.hpp"
+#include <Gecko/GameObject.hpp>
 
 #include "Collision/AABB.hpp"
 #include "Collision/OBB.hpp"

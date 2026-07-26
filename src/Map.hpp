@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Gecko/Scene.hpp"
+#include <Gecko/Scene.hpp>
 
 class Map : public Gecko::Scene
 {
