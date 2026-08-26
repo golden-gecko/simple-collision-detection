@@ -5,3 +5,4 @@ build/
 *.lib
 *.mesh
 *.pdb
+CMakeUserPresets.json
