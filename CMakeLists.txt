@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 4.2)
 include(FetchContent)
 
 # Project
-project(simple-collision-detection LANGUAGES CXX)
+project(simple-collision-detection)
 
 # Sources
 file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/src/*.hpp)
